@@ -7,6 +7,10 @@
 - link:
     ~/.dotfiles: ''
     ~/.gitconfig: gitconfig
+    ~/.gnupg/:
+      glob: true
+      path: gnupg/*
+    ~/.zsh: zsh/
     ~/.zshrc:
       force: true
       path: zshrc
