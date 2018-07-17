@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+DEFAULT_PROFILE=workstation
+
+./install-profile $DEFAULT_PROFILE
