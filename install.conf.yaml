@@ -1,0 +1,16 @@
+- defaults:
+    link:
+      relink: true
+
+- clean: ['~']
+
+- link:
+    ~/.dotfiles: ''
+    ~/.gitconfig: gitconfig
+    ~/.zshrc:
+      force: true
+      path: zshrc
+
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
+        
