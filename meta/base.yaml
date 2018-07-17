@@ -1,0 +1,14 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+
+- link:
+    ~/.dotfiles: ''
+
+- shell:
+    - ["git submodule update --init --recursive", "Installing submodules"]
+
+- clean: [
+    '~'
+]

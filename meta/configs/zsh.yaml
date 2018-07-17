@@ -1,0 +1,5 @@
+- link:
+   ~/.zsh: shells/zsh/
+   ~/.zshrc:
+     force: true
+     path: shells/zsh/zshrc

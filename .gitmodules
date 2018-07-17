@@ -1,6 +1,6 @@
 [submodule "dotbot"]
-	path = dotbot
+	path = meta/dotbot
 	url = https://github.com/anishathalye/dotbot
 [submodule "zsh/zplug"]
-	path = zsh/zplug
+	path = shells/zsh/zplug
 	url = https://github.com/zplug/zplug

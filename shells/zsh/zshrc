@@ -3,7 +3,7 @@
 ZPLUG_HOME=~/.zsh/zplug
 source $ZPLUG_HOME/init.zsh
 
-
+# Loads zsh config files
 _load_configs() {
   _dir="$1"
   # Make sure directory exists
@@ -53,10 +53,12 @@ if ! zplug check --verbose; then
   fi
 fi
 
-zplug load --verbose
+# Add --verbose to debug loading order
+zplug load
 
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
 # Prevent local config sourcing from presenting falsy return value to theme
 true
+
