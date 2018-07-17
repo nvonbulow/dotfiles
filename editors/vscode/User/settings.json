@@ -1,0 +1,5 @@
+{
+    "files.autoSave": "onFocusChange",
+    "vim.easymotion": true,
+    "vim.useSystemClipboard": true
+}
