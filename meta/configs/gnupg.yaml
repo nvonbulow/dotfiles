@@ -1,5 +1,6 @@
 - link:
     ~/.gnupg/:
       glob: true
+      create: true
       path: crypto/gnupg/*
 
