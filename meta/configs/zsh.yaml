@@ -3,3 +3,6 @@
    ~/.zshrc:
      force: true
      path: shells/zsh/zshrc
+   ~/.p10k.zsh:
+     force: true
+     path: shells/zsh/configs/p10k.zsh
