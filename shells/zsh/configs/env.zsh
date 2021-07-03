@@ -7,8 +7,9 @@ _add_to_path() {
 
 _add_to_path ~/.local/bin
 
-# If nvm is installed, then initialize it
-[[ -e /usr/share/nvm/init-nvm.sh ]] && source /usr/share/nvm/init-nvm.sh
+# Use nvm from user directory if it exists; otherwise try to find the system copy
+[[ -e $HOME/.nvm/nvm.sh ]] && source $HOME/.nvm/nvm.sh \
+  || [[ -e /usr/share/nvm/init-nvm.sh ]] && source /usr/share/nvm/init-nvm.sh \
 
 # Android SDK path variable
 export ANDROID_HOME=/opt/android-sdk
