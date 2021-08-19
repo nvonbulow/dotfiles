@@ -2,7 +2,12 @@ setopt completealiases
 
 alias zshconfig="edit ~/.zshrc"
 alias zshsource="source ~/.zshrc"
-alias colormap='for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done'
+
+function colormap {
+    for i in {0..255}; do
+        print -Pn ${(l:3::0:)i}" "%K{$i}"  "%k%F{$i}test%f" "${${(M)$(((i+1)%8)):#0}:+$'\n'};
+    done
+}
 
 if whence -w git | grep alias > /dev/null; then
     unalias git
