@@ -4,12 +4,12 @@ alias zshconfig="edit ~/.zshrc"
 alias zshsource="source ~/.zshrc"
 alias colormap='for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done'
 
-if whence -w git | grep alias; then
+if whence -w git | grep alias > /dev/null; then
     unalias git
 fi
 
 case $(uname -a) in
-    *microsoft*) alias cmd="/mnt/c/Windows/System32/cmd.exe"
+    *WSL*) alias cmd="/mnt/c/Windows/System32/cmd.exe"
                  alias git_wsl="$(which git)"
                  alias git="_wsl_autogit" ;;
 esac
