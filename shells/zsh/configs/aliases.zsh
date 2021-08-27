@@ -9,6 +9,8 @@ function colormap {
     done
 }
 
+# Git aliases
+
 if whence -w git | grep alias > /dev/null; then
     unalias git
 fi
@@ -26,6 +28,10 @@ function _wsl_autogit {
     else
         git_wsl $@
     fi
+}
+
+function git-cleanup {
+    git fetch --prune && git branch -vv | grep ': gone]' | grep -v "\*" | awk '{ print $1 }' | xargs git branch -D
 }
 
 # oh-my-zsh directory aliases
