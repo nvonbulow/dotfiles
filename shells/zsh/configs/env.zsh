@@ -1,11 +1,18 @@
 _prepend_to_path() {
-  export PATH="$1":$PATH
+  if [[ -d $1 ]]; then
+    export PATH="$1":$PATH
+  fi
 }
 _add_to_path() {
-  export PATH=$PATH:"$1"
+  if [[ -d $1 ]]; then
+    export PATH=$PATH:"$1"
+  fi
 }
 
-_add_to_path ~/.local/bin
+# local executables
+_add_to_path $HOME/.local/bin
+
+_add_to_path $HOME/.cargo/bin
 
 # Use nvm from user directory if it exists; otherwise try to find the system copy
 if [[ -e $HOME/.nvm/nvm.sh ]]; then
