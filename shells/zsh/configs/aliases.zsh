@@ -9,6 +9,12 @@ function colormap {
     done
 }
 
+# open command to mimic that on Mac
+# all output is also not shown on the terminal
+function open {
+    xdg-open $@ 1> /dev/null 2>&1 &!
+}
+
 # Git aliases
 
 if whence -w git | grep alias > /dev/null; then
