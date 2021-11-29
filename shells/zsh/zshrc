@@ -12,7 +12,7 @@ _load_configs() {
     if [ -d "$_dir/pre" ]; then
       for config in "$_dir"/pre/**/*(N-.); do
         if [ ${config:e} = "zwc" ]; then continue; fi
-	source $config
+        source $config
       done
     fi
 
@@ -21,15 +21,14 @@ _load_configs() {
         # Skip preconfigs and postconfigs
         "$_dir"/pre/*)
           :
-	;;
+        ;;
         "$_dir"/post/*)
           :
-	;;
-
-	*)
+        ;;
+        *)
           if [[ -f $config && ${config:e} != "zwc" ]]; then
             source $config
-	  fi
+          fi
         ;;
       esac
     done
@@ -38,7 +37,7 @@ _load_configs() {
     if [ -d "$_dir/post" ]; then
       for config in "$_dir"/post/**/*(N-.); do
         if [ ${config:e} = "zwc" ]; then continue; fi
-	source $config
+        source $config
       done
     fi
   fi
