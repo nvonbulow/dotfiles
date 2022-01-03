@@ -21,11 +21,11 @@ if whence -w git | grep alias > /dev/null; then
     unalias git
 fi
 
-case $(uname -a) in
-    *WSL*) alias cmd="/mnt/c/Windows/System32/cmd.exe"
-                 alias git_wsl="$(which git)"
-                 alias git="_wsl_autogit" ;;
-esac
+if [[ -d /mnt/c/Windows ]]; then
+    alias cmd="/mnt/c/Windows/System32/cmd.exe"
+    alias git_wsl="$(which git)"
+    alias git="_wsl_autogit"
+fi
 
 # Autocomplete does not work in Windows directories yet
 function _wsl_autogit {
