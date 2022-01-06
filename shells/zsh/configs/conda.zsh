@@ -1,4 +1,10 @@
-__conda_path=$HOME/anaconda3
+if [[ -d $HOME/anaconda3 ]]; then
+    __conda_path=$HOME/anaconda3
+fi
+
+if [[ -d $HOME/miniconda3 ]]; then
+    __conda_path=$HOME/miniconda3
+fi
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
