@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Detects the current directory; if in a Windows directory, use the Windows version
+# Otherwise fall back to the Linux version
+if [[ "${PWD##/mnt/c/}" != "${PWD}" ]]; then
+    cmd.exe /c git "$@"
+else
+    /usr/bin/git "$@"
+fi

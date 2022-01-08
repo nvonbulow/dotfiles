@@ -2,3 +2,11 @@
 install.sh
 LICENSE
 README.md
+
+# Stuff that's WSL specific
+{{- if (not (and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft"))) }}
+
+.local/bin/gpg
+.local/bin/git
+
+{{- end }}

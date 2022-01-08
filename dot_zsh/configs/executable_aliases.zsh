@@ -21,20 +21,16 @@ if whence -w git | grep alias > /dev/null; then
     unalias git
 fi
 
-if [[ -d /mnt/c/Windows ]]; then
-    alias cmd="/mnt/c/Windows/System32/cmd.exe"
-    alias git_wsl="$(which git)"
-    alias git="_wsl_autogit"
+# Are we running on WSL?
+if [[ -d "/mnt/c/Windows" ]]; then
+    # autogit will use Windows git in Windows directories and WSL git in Linux directories
+    function _install_autogit {
+        alias cmd="/mnt/c/Windows/System32/cmd.exe"
+        alias git-wsl="$(which git)"
+        alias git="_wsl_autogit"
+    }
 fi
 
-# Autocomplete does not work in Windows directories yet
-function _wsl_autogit {
-    if [[ "${PWD##/mnt/}" != "${PWD}" ]]; then
-        cmd /c git $@
-    else
-        git_wsl $@
-    fi
-}
 
 function git-cleanup {
     git fetch --prune && git branch -vv | grep ': gone]' | grep -v "\*" | awk '{ print $1 }' | xargs git branch -D

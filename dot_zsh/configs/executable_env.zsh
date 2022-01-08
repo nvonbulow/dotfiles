@@ -10,7 +10,7 @@ _add_to_path() {
 }
 
 # local executables
-_add_to_path $HOME/.local/bin
+_prepend_to_path $HOME/.local/bin
 
 _add_to_path $HOME/.cargo/bin
 

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# uses the Windows installation of GPG if found, for smart card support
+if command -v gpg.exe > /dev/null; then
+    cmd.exe /c gpg "$@"
+else
+    /usr/bin/gpg "$@"
+fi
