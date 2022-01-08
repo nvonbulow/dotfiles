@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Detects the current directory; if in a Windows directory, use the Windows version
 # Otherwise fall back to the Linux version
@@ -7,3 +7,4 @@ if [[ "${PWD##/mnt/c/}" != "${PWD}" ]]; then
 else
     /usr/bin/git "$@"
 fi
+

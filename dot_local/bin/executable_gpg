@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # uses the Windows installation of GPG if found, for smart card support
 if command -v gpg.exe > /dev/null; then
@@ -6,3 +6,4 @@ if command -v gpg.exe > /dev/null; then
 else
     /usr/bin/gpg "$@"
 fi
+
