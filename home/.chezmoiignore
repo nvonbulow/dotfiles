@@ -1,13 +1,29 @@
-.github/
-install.sh
-LICENSE
-README.md
 
-# Stuff that's WSL specific
-{{- if (not (and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft"))) }}
+# Check if this environment is running in WSL
+{{- $isWsl := false }}
+{{- if (eq .chezmoi.os "linux") }}
+{{-   if (eq .chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+
+{{-     $isWsl := true }}
+
+{{-   end }}
+{{- end }}
+
+# files to exclude on WSL
+{{- if (not $isWsl)}}
 
 .local/bin/gpg
 .local/bin/git
+
+{{- end }}
+
+# Ignore zsh stuff on Windows
+{{- if (eq .chezmoi.os "windows")}}
+
+.zsh
+.zshrc
+.p10k.zsh
+.zplug
 
 {{- end }}
 
