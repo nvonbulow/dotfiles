@@ -10,3 +10,6 @@ README.md
 .local/bin/git
 
 {{- end }}
+
+# Ignore zplug self-managed files
+.zplug/{cache,log,repos,zcompdump}
