@@ -2,7 +2,7 @@
 # Check if this environment is running in WSL
 {{- $isWsl := false }}
 {{- if (eq .chezmoi.os "linux") }}
-{{-   if (eq .chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+{{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
 
 {{-     $isWsl := true }}
 
