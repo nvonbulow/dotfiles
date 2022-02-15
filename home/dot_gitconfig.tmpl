@@ -1,3 +1,18 @@
 [user]
 	email = {{ .email }}
 	name = {{ .name }}
+
+[core]
+	# don't page if everything fits on a line
+	pager = less -F -X
+
+[gc]
+	auto = 0
+	reflogExpire = never
+	reflogExpireUnreachable = never
+
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
