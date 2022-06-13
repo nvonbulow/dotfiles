@@ -21,5 +21,13 @@ elif [[ -e /usr/share/nvm/init-nvm.sh ]]; then
   source /usr/share/nvm/init-nvm.sh
 fi
 
+export GOENV_ROOT=$HOME/.goenv
+
+if [[ -d $GOENV_ROOT ]]; then
+  _add_to_path $GOENV_ROOT/bin
+  eval "$(goenv init -)"
+else
+  unset GOENV_ROOT
+fi
 # Android SDK path variable
 export ANDROID_HOME=/opt/android-sdk
