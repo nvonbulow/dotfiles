@@ -1,6 +1,6 @@
 # You probably want to edit files in ~/.zsh/configs
 
-ZPLUG_HOME=~/.zsh/zplug
+ZPLUG_HOME=~/.zplug
 source $ZPLUG_HOME/init.zsh
 
 # Loads zsh config files
