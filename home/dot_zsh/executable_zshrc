@@ -1,9 +1,5 @@
 # You probably want to edit files in ~/.zsh/configs
 
-zplug() {
-
-}
-
 # Loads zsh config files
 _load_configs() {
   _dir="$1"

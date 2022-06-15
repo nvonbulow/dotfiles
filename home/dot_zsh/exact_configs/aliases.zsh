@@ -31,11 +31,6 @@ if [[ -d "/mnt/c/Windows" ]]; then
     }
 fi
 
-
 function git-cleanup {
     git fetch --prune && git branch -vv | grep ': gone]' | grep -v "\*" | awk '{ print $1 }' | xargs git branch -D
 }
-
-# oh-my-zsh directory aliases
-zplug "lib/directories", from:oh-my-zsh
-

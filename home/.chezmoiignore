@@ -23,9 +23,6 @@
 .zsh
 .zshrc
 .p10k.zsh
-.zplug
+.zim
 
 {{- end }}
-
-# Ignore zplug self-managed files
-.zplug/{cache,log,repos,zcompdump}

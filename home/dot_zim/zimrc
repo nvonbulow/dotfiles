@@ -1,10 +1,31 @@
-zmodule "zsh-users/zsh-autosuggestions"
 zmodule "completion"
+
+# Theme
 zmodule "romkatv/powerlevel10k"
 
-OH_MY_ZSH_PLUGINS=(
-    "plugins/command-not-found"
+# interactive git
+zmodule "ytakahashi/igit"
+
+oh_my_zsh_plugins=(
+    # oh-my-zsh directory aliases
+    "lib/directories.zsh"
+    "lib/key-bindings.zsh"
+    # Enable using command history from previous sessions
+    "lib/history.zsh"
+    # Remember to install `pkgfile` if on Arch Linux
+    "plugins/command-not-found/command-not-found.plugin.zsh"
+    "plugins/gpg-agent/gpg-agent.plugin.zsh"
 )
+
+for plugin in $oh_my_zsh_plugins; do
+  zmodule "ohmyzsh/ohmyzsh" --source $plugin
+done
+
+zmodule "zsh-users/zsh-autosuggestions"
+
+## Deferred plugins
 
 # syntax highlighting must be loaded last
 zmodule "zdharma-continuum/fast-syntax-highlighting"
+
+zmodule "zsh-users/zsh-history-substring-search"
