@@ -1,4 +1,4 @@
-[".zplug"]
+[".zsh/zplug"]
     type = "archive"
     url = "https://github.com/zplug/zplug/archive/master.tar.gz"
     exact = true
