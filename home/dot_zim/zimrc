@@ -1,0 +1,10 @@
+zmodule "zsh-users/zsh-autosuggestions"
+zmodule "completion"
+zmodule "romkatv/powerlevel10k"
+
+OH_MY_ZSH_PLUGINS=(
+    "plugins/command-not-found"
+)
+
+# syntax highlighting must be loaded last
+zmodule "zdharma-continuum/fast-syntax-highlighting"

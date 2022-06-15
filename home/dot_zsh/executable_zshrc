@@ -1,7 +1,8 @@
 # You probably want to edit files in ~/.zsh/configs
 
-ZPLUG_HOME=~/.zsh/zplug
-source $ZPLUG_HOME/init.zsh
+zplug() {
+
+}
 
 # Loads zsh config files
 _load_configs() {
@@ -45,19 +46,11 @@ _load_configs() {
 
 _load_configs ~/.zsh/configs
 
-if ! zplug check --verbose; then
-  printf "Install? [y/N] "
-  if read -q; then
-    echo; zplug install
-  fi
+ZIM_HOME=~/.zim
+if [[ ! ${ZIM_HOME}/init.zsh -nt ${HOME}/.zimrc ]] ; then
+  source ${ZIM_HOME}/zimfw.zsh init
 fi
-
-# Add --verbose to debug loading order
-zplug load
+source ~/.zim/init.zsh
 
 # Local config
-[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-
-# Prevent local config sourcing from presenting falsy return value to theme
-true
-
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local || true
