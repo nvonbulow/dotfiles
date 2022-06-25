@@ -21,6 +21,11 @@ if whence -w git | grep alias > /dev/null; then
     unalias git
 fi
 
+# If exa is installed, alias ls to it
+if [ "$(command -v exa)" ]; then
+    alias ls="exa --icons"
+fi
+
 # Are we running on WSL?
 if [[ -d "/mnt/c/Windows" ]]; then
     # autogit will use Windows git in Windows directories and WSL git in Linux directories
