@@ -14,12 +14,8 @@ _prepend_to_path $HOME/.local/bin
 
 _add_to_path $HOME/.cargo/bin
 
-# Use nvm from user directory if it exists; otherwise try to find the system copy
-if [[ -e $HOME/.nvm/nvm.sh ]]; then
-  source $HOME/.nvm/nvm.sh
-elif [[ -e /usr/share/nvm/init-nvm.sh ]]; then
-  source /usr/share/nvm/init-nvm.sh
-fi
+# Automatic nvm download and installation
+zplug "lukechilds/zsh-nvm"
 
 # Automatic goenv download and installation
 zplug "RiverGlide/zsh-goenv", from:gitlab
