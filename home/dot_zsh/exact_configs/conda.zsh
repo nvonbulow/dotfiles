@@ -6,6 +6,10 @@ if [[ -d $HOME/miniconda3 ]]; then
     __conda_path=$HOME/miniconda3
 fi
 
+if [[ -d $HOME/mambaforge ]]; then
+    __conda_path=$HOME/mambaforge
+fi
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('$__conda_path/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
