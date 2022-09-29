@@ -22,3 +22,13 @@ zplug "RiverGlide/zsh-goenv", from:gitlab
 
 # Android SDK path variable
 export ANDROID_HOME=/opt/android-sdk
+
+# 1Password SSH Features
+local macos_agent=$HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+local linux_agent=$HOME/.1password/agent.sock
+
+if [[ -S $macos_agent ]]; then
+  export SSH_AUTH_SOCK=$macos_agent
+elif [[ -S $linux_agent ]]; then
+  export SSH_AUTH_SOCK=$linux_agent
+fi
