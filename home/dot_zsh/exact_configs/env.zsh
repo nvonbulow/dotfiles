@@ -17,8 +17,10 @@ _add_to_path $HOME/.cargo/bin
 # Automatic nvm download and installation
 zplug "lukechilds/zsh-nvm"
 
-# Automatic goenv download and installation
-zplug "RiverGlide/zsh-goenv", from:gitlab
+# Automatically init goenv
+if [ "$(command -v goenv)" ]; then
+  eval "$(goenv init -)"
+fi
 
 # Android SDK path variable
 export ANDROID_HOME=/opt/android-sdk
