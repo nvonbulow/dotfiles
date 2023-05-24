@@ -22,6 +22,11 @@ if [ "$(command -v goenv)" ]; then
   eval "$(goenv init -)"
 fi
 
+# Automatically init pyenv
+if [ "$(command -v pyenv)" ]; then
+  eval "$(pyenv init -)"
+fi
+
 # Android SDK path variable
 export ANDROID_HOME=/opt/android-sdk
 
