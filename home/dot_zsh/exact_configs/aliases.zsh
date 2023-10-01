@@ -43,3 +43,7 @@ function git-cleanup {
 # oh-my-zsh directory aliases
 zplug "lib/directories", from:oh-my-zsh
 
+# automatically detects command for copying/pasting from clipboard
+# clipcopy copies to clipboard, clippaste pastes from clipboard
+zplug "lib/clipboard", from:oh-my-zsh
+
