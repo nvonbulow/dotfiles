@@ -65,7 +65,7 @@ return {
         },
         left = {
           {
-            title = "Neo-Tree",
+            title = "File Tree",
             ft = "neo-tree",
             filter = function(buf)
               return vim.b[buf].neo_tree_source == "filesystem"
@@ -78,7 +78,7 @@ return {
           },
           { title = "Neotest Summary", ft = "neotest-summary" },
           {
-            title = "Neo-Tree Git",
+            title = "Git",
             ft = "neo-tree",
             filter = function(buf)
               return vim.b[buf].neo_tree_source == "git_status"
@@ -87,7 +87,7 @@ return {
             open = "Neotree position=right git_status",
           },
           {
-            title = "Neo-Tree Buffers",
+            title = "Buffers",
             ft = "neo-tree",
             filter = function(buf)
               return vim.b[buf].neo_tree_source == "buffers"
@@ -96,6 +96,16 @@ return {
             open = "Neotree position=top buffers",
           },
           "neo-tree",
+          {
+            title = "Outline",
+            ft = "Outline",
+            pinned = true,
+            open = "SymbolsOutline",
+          },
+        },
+        options = {
+          left = { size = 40 },
+          bottom = { size = 20 },
         },
         keys = {
           -- increase width
