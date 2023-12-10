@@ -19,6 +19,7 @@ return {
     end,
   },
 
+  -- toggleable terminal widget
   {
     "akinsho/toggleterm.nvim",
     version = "*",
@@ -27,10 +28,25 @@ return {
     keys = {
       {
         "<leader>wt",
-        function()
-          require("toggleterm").toggle()
-        end,
+        "<cmd>ToggleTerm dir=%:p:h<cr>",
         desc = "Toggle terminal",
+      },
+    },
+  },
+
+  -- Always show bufferline tabs
+  { "akinsho/bufferline.nvim", opts = { options = { always_show_bufferline = true } } },
+
+  {
+    "telescope.nvim",
+    dependencies = {
+
+      {
+        "tiagovla/scope.nvim",
+        config = function(_, opts)
+          require("scope").setup(opts)
+          require("telescope").load_extension("scope")
+        end,
       },
     },
   },
