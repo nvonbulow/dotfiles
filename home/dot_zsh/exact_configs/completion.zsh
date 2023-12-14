@@ -8,8 +8,8 @@ if type brew &>/dev/null; then
 fi
 
 # oh-my-zsh style completion (case-insensitive, etc.)
-# zplug 'lib/completion', from:oh-my-zsh
+zplug 'lib/completion', from:oh-my-zsh
 
-zplug 'marlonrichert/zsh-autocomplete', defer:2
+# zplug 'marlonrichert/zsh-autocomplete', defer:2
 # Enhanced version of the cd command with fuzzy search
 # zplug 'b4b4r07/enhancd', use:init.sh

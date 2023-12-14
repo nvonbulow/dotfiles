@@ -8,6 +8,7 @@ ZVM_LINE_INIT_MODE=i
 
 # Remember to install `pkgfile` if on Arch Linux
 zplug "plugins/command-not-found", from:oh-my-zsh
+zplug "plugins/aws", from:oh-my-zsh
 # zplug "plugins/gpg-agent", from:oh-my-zsh
 
 # Interactive git command (igit)

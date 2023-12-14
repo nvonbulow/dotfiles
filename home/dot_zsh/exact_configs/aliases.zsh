@@ -3,6 +3,8 @@ setopt completealiases
 alias zshconfig="edit ~/.zshrc"
 alias zshsource="source ~/.zshrc"
 
+hash -d repos=$HOME/Documents/repos
+
 function colormap {
     for i in {0..255}; do
         print -Pn ${(l:3::0:)i}" "%K{$i}"  "%k%F{$i}test%f" "${${(M)$(((i+1)%8)):#0}:+$'\n'};
