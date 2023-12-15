@@ -1,14 +1,24 @@
-# You probably want to edit files in ~/.zsh/configs
+#!/bin/zsh
 
-ANTIDOTE_INSTALL=~/.zsh/antidote
-ANTIDOTE_HOME=~/.cache/antidote
-source $ANTIDOTE_INSTALL/antidote.zsh
+setup_znap() {
+  ZNAP_HOME=~/.zsh/znap
+  ZNAP_CACHE=~/.cache/znap
+  [[ -r $ZNAP_HOME/znap.zsh ]] ||
+    git clone https://github.com/marlonrichert/zsh-snap.git $ZNAP_HOME
+
+  mkdir -p $ZNAP_CACHE
+  zstyle ':znap:*' repos-dir $ZNAP_CACHE
+
+  source $ZNAP_HOME/znap.zsh
+}
+setup_znap
+
+source ~/.p10k.zsh
+znap prompt romkatv/powerlevel10k
+
+znap source marlonrichert/zsh-autocomplete
+znap source zdharma-continuum/fast-syntax-highlighting
 
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-
-antidote load
-
-source ~/.p10k.zsh
-autoload -Uz promptinit && promptinit && prompt powerlevel10k
 

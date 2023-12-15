@@ -14,8 +14,3 @@ zstyle ':znap:*' repos-dir $ZNAP_CACHE
 
 source $ZNAP_HOME/znap.zsh
 
-source ~/.p10k.zsh
-znap prompt romkatv/powerlevel10k
-
-znap source marlonrichert/zsh-autocomplete
-znap source zdharma-continuum/fast-syntax-highlighting
