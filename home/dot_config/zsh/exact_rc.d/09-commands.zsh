@@ -49,3 +49,7 @@ alias -s {log,out}='tail -F'
 
 # Use `< file` to quickly view the contents of any text file.
 READNULLCMD=$PAGER  # Set the program to use for this.
+
+[[ $(command -v eza) ]] && alias ls="eza --icons"
+
+[[ $(command -v nvim) ]] && alias vim="nvim"

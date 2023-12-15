@@ -36,6 +36,7 @@ if command -v brew > /dev/null; then
   # Here, we add it to the end of $fpath, so that we use brew's completions
   # only for those commands that zsh doesn't already know how to complete.
   fpath+=(
-      $HOMEBREW_PREFIX/share/zsh/site-functions
+    $HOMEBREW_PREFIX/share/zsh-completions
+    $HOMEBREW_PREFIX/share/zsh/site-functions
   )
 fi
