@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+# load all our configs
+() {
+  local file=
+  for file in $ZDOTDIR/rc.d/<->-*.zsh(n); do
+    . $file
+  done
+} "$@"
+

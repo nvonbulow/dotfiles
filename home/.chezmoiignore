@@ -30,6 +30,10 @@
 # Ignore zplug self-managed files
 .zplug/{cache,log,repos,zcompdump}
 
+# Compiled zsh files
+.zwc
+.zsh_history
+
 # Ignore iterm2 integration on non-Mac systems
 {{ if ne .chezmoi.os "darwin" }}
 .zsh/iterm2_integration.zsh
