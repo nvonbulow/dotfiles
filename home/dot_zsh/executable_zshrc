@@ -1,63 +1,14 @@
 # You probably want to edit files in ~/.zsh/configs
 
-ZPLUG_HOME=~/.zplug
-source $ZPLUG_HOME/init.zsh
-
-# Loads zsh config files
-_load_configs() {
-  _dir="$1"
-  # Make sure directory exists
-  if [ -d "$_dir" ]; then
-    # If preconfigs exist, apply them first
-    if [ -d "$_dir/pre" ]; then
-      for config in "$_dir"/pre/**/*(N-.); do
-        if [ ${config:e} = "zwc" ]; then continue; fi
-        source $config
-      done
-    fi
-
-    for config in "$_dir"/**/*(N-.); do
-      case "$config" in
-        # Skip preconfigs and postconfigs
-        "$_dir"/pre/*)
-          :
-        ;;
-        "$_dir"/post/*)
-          :
-        ;;
-        *)
-          if [[ -f $config && ${config:e} != "zwc" ]]; then
-            source $config
-          fi
-        ;;
-      esac
-    done
-      
-    # If postconfigs exist, apply them last 
-    if [ -d "$_dir/post" ]; then
-      for config in "$_dir"/post/**/*(N-.); do
-        if [ ${config:e} = "zwc" ]; then continue; fi
-        source $config
-      done
-    fi
-  fi
-}
-
-_load_configs ~/.zsh/configs
-
-if ! zplug check --verbose; then
-  printf "Install? [y/N] "
-  if read -q; then
-    echo; zplug install
-  fi
-fi
-
-# Add --verbose to debug loading order
-zplug load
+ANTIDOTE_INSTALL=~/.zsh/antidote
+ANTIDOTE_HOME=~/.cache/antidote
+source $ANTIDOTE_INSTALL/antidote.zsh
 
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
-# Prevent local config sourcing from presenting falsy return value to theme
-true
+antidote load
+
+source ~/.p10k.zsh
+autoload -Uz promptinit && promptinit && prompt powerlevel10k
 
