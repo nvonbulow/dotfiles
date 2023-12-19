@@ -58,3 +58,8 @@ bindkey '^[w' where-is
     LBUFFER="sudo $LBUFFER"
   }
 } .sudo
+
+# Tab: Instead of inserting first completion, start cycling through completion options
+bindkey '\t' menu-select "$terminfo[kcbt]" menu-select
+bindkey -M menuselect '\t' menu-complete "$terminfo[kcbt]" reverse-menu-complete
+
