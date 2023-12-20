@@ -23,3 +23,7 @@ setopt GLOB_STAR_SHORT
 
 # Sort numbers numerically, not lexicographically.
 setopt NUMERIC_GLOB_SORT
+
+# Allow zsh to complete aliases, e.g. ls -> eza
+setopt completealiases
+

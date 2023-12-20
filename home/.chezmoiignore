@@ -31,7 +31,7 @@
 .zplug/{cache,log,repos,zcompdump}
 
 # Compiled zsh files
-*.zwc
+**/*.zwc
 .config/zsh/.zsh_history
 
 # Ignore iterm2 integration on non-Mac systems
