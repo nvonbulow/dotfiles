@@ -40,3 +40,9 @@ if command -v brew > /dev/null; then
     $HOMEBREW_PREFIX/share/zsh/site-functions
   )
 fi
+
+if command -v rtx > /dev/null; then
+  znap eval rtx-activate 'rtx activate zsh'
+  znap fpath _rtx 'rtx completion zsh'
+fi
+

@@ -4,7 +4,6 @@ local -a plugins=(
   marlonrichert/zsh-autocomplete
   zdharma-continuum/fast-syntax-highlighting
   zsh-users/zsh-autosuggestions
-  asdf-vm/asdf
 )
 
 # Clone all plugins in parallel
