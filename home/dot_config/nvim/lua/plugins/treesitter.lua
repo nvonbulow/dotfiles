@@ -92,6 +92,7 @@ return {
       local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
 
       return {
+        -- TODO: make these two keys work for ANY move, not just for treesitter textobjects
         { ";", mode = { "n", "x", "o" }, ts_repeat_move.repeat_last_move, desc = "Repeat last move" },
         {
           ",",
@@ -99,6 +100,11 @@ return {
           ts_repeat_move.repeat_last_move_opposite,
           desc = "Repeat last move backwards",
         },
+        -- enable repeats for `f`, `F`, `t`, and `T`
+        { "f", mode = { "n", "x", "o" }, ts_repeat_move.builtin_f },
+        { "F", mode = { "n", "x", "o" }, ts_repeat_move.builtin_F },
+        { "t", mode = { "n", "x", "o" }, ts_repeat_move.builtin_t },
+        { "T", mode = { "n", "x", "o" }, ts_repeat_move.builtin_T },
       }
     end,
   },
