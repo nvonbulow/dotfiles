@@ -31,6 +31,7 @@ local function live_grep_git_root()
   end
 end
 
+---@type LazySpec
 return {
   {
     'nvim-telescope/telescope.nvim',
@@ -64,6 +65,7 @@ return {
         winblend = 0,
       },
     },
+    cmd = { 'Telescope' },
     keys = function()
       -- See `:help telescope.builtin`
       local builtin = require('telescope.builtin')
