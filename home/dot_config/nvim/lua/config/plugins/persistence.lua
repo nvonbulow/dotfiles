@@ -35,8 +35,9 @@ return {
         '<leader>qd',
         function()
           require('persistence').stop()
+          vim.cmd.qa()
         end,
-        desc = "Don't Save Current Session",
+        desc = 'Quit All Without Saving Session',
       },
     },
   },
