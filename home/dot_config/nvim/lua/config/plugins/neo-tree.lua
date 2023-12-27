@@ -9,12 +9,12 @@ return {
       '3rd/image.nvim',
     },
     keys = {
-      { '<leader>e', '<cmd>Neotree toggle<cr>', desc = 'Toggle Neotree' },
+      { '<leader>e', function() require('neo-tree.command').execute({ toggle = true }) end, desc = 'Toggle Neotree', remap = true },
     },
     init = function()
       -- Disable builtin netrw plugin in favor of Neotree
-      vim.g.loaded_netrw = 1
-      vim.g.loaded_netrwPlugin = 1
+      -- vim.g.loaded_netrw = 1
+      -- vim.g.loaded_netrwPlugin = 1
 
       if vim.fn.argc(-1) == 1 then
         local stat = vim.loop.fs_stat(vim.fn.argv(0))
@@ -66,6 +66,8 @@ return {
     },
     config = function (self, opts)
       require('neo-tree').setup(opts)
+
+      -- TODO: trigger LSP action on rename
 
       vim.api.nvim_create_autocmd('VimLeavePre', {
         callback = function ()
