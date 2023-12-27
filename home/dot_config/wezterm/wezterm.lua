@@ -12,6 +12,8 @@ config.font_size = 14.0
 -- disable ligatures ->
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
 
+config.term = "wezterm"
+
 -- set theme
 config.color_scheme = "Catppuccin Mocha"
 
