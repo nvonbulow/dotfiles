@@ -6,11 +6,12 @@ return {
     opts = {
       -- See `:help gitsigns.txt`
       signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
+        add = { text = '▎' },
+        change = { text = '▎' },
+        delete = { text = '' },
+        topdelete = { text = '' },
+        changedelete = { text = '▎' },
+        untracked = { text = '▎' },
       },
       on_attach = function(bufnr)
         -- local gs = package.loaded.gitsigns
@@ -86,7 +87,7 @@ return {
         -- register which-key VISUAL mode
         ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
         ['<leader>gh'] = { 'Git [H]unk' },
-      }
-    }
+      },
+    },
   },
 }
