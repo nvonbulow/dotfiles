@@ -1,3 +1,4 @@
+---@type LazySpec
 return {
   -- indent guides for Neovim
   {
@@ -5,7 +6,7 @@ return {
     event = 'VeryLazy',
     opts = {
       indent = {
-        char = '│',
+        char = '▏',
         tab_char = '│',
       },
       scope = { enabled = false },
