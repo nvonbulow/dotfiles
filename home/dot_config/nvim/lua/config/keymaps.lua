@@ -30,6 +30,14 @@ set('n', '<leader>w|', '<C-w>v', { desc = 'Split window right', remap = true })
 set('n', '<leader>-', '<C-w>s', { desc = 'Split window below', remap = true })
 set('n', '<leader>|', '<C-w>v', { desc = 'Split window right', remap = true })
 
+-- Tab Management
+set("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
+set("n", "<leader><tab>f", "<cmd>tabfirst<cr>", { desc = "First Tab" })
+set("n", "<leader><tab><tab>", "<cmd>tabnew<cr>", { desc = "New Tab" })
+set("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
+set("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
+set("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
+
 -- Diagnostic keymaps
 set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
