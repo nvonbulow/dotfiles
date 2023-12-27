@@ -20,6 +20,7 @@ return {
         close_command = function(n)
           require('mini.bufremove').delete(n, false)
         end,
+        right_mouse_command = false, 
         offsets = {
           {
             filetype = 'neo-tree',
@@ -28,6 +29,8 @@ return {
             text_align = 'left',
           },
         },
+        separator_style = 'slope',
+        diagnostics = 'nvim_lsp',
       },
     },
     config = function(_, opts)
@@ -42,7 +45,7 @@ return {
       })
     end,
     dependencies = {
-      'echasnovski/mini.nvim',
+      'echasnovski/mini.bufremove',
       'nvim-tree/nvim-web-devicons',
     },
   },
