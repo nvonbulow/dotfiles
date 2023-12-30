@@ -14,7 +14,10 @@ return {
           statusline = { 'dashboard' },
         },
       },
-      -- sections = {},
+      sections = {
+        lualine_a = { 'mode' },
+        lualine_b = { 'branch' },
+      },
       extensions = { 'neo-tree', 'lazy' },
     },
   },

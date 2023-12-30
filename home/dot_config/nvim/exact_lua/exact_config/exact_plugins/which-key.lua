@@ -3,14 +3,17 @@ return {
   -- Useful plugin to show you pending keybinds.
   {
     'folke/which-key.nvim',
-    init = function ()
+    init = function()
       -- customize the timeout before the which-key popup appears
-      vim.o.timeout = true
-      vim.o.timeoutlen = 500
+      -- vim.o.timeout = true
+      -- vim.o.timeoutlen = 500
     end,
     opts = {
       defaults = {
         -- document existing key chains
+        ['g'] = { name = '+goto' },
+        ['gs'] = { name = '+surround' },
+        ['y'] = { name = '+yank' },
         ['<leader>b'] = { name = '[B]uffer', _ = 'which_key_ignore' },
         ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
         ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
@@ -23,6 +26,17 @@ return {
       defaults_visual = {
         -- required for visual <leader>hs (hunk stage) to work
         ['<leader>'] = { name = 'VISUAL <leader>' },
+      },
+      plugins = {
+        presets = {
+          operators = true,
+          motions = true,
+          text_objects = true,
+          windows = true,
+          nav = true,
+          z = true,
+          g = true,
+        },
       },
     },
     config = function(_, opts)
