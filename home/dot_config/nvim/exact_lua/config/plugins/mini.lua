@@ -74,7 +74,7 @@ return {
     version = false, -- wait till new 0.7.0 release to put it back on semver
     event = 'VeryLazy',
     opts = {
-      symbol = "▏",
+      symbol = '▏',
       -- symbol = '│',
       options = { try_as_border = true },
     },
@@ -99,4 +99,38 @@ return {
       })
     end,
   },
+  {
+    'echasnovski/mini.surround',
+    version = false,
+    keys = function(self)
+      local opts = self.opts
+      local mappings = {
+        { opts.mappings.add, desc = 'Add surrounding', mode = { 'n', 'v' } },
+        { opts.mappings.delete, desc = 'Delete surrounding' },
+        { opts.mappings.find, desc = 'Find right surrounding' },
+        { opts.mappings.find_left, desc = 'Find left surrounding' },
+        { opts.mappings.highlight, desc = 'Highlight surrounding' },
+        { opts.mappings.replace, desc = 'Replace surrounding' },
+        { opts.mappings.update_n_lines, desc = 'Update `MiniSurround.config.n_lines`' },
+      }
+
+      return mappings
+    end,
+    opts = {
+      mappings = {
+        add = 'gsa',
+        delete = 'gsd', -- Delete surrounding
+        find = 'gsf', -- Find surrounding (to the right)
+        find_left = 'gsF', -- Find surrounding (to the left)
+        highlight = 'gsh', -- Highlight surrounding
+        replace = 'gsr', -- Replace surrounding
+        update_n_lines = 'gsn', -- Update `n_lines`
+      },
+    },
+  },
+  {
+    'echasnovski/mini.ai',
+    version = false,
+    event = 'VeryLazy',
+  }
 }
