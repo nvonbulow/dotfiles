@@ -11,6 +11,12 @@ return {
       integrations = {
         aerial = true,
         alpha = true,
+        barbecue = {
+          dim_dirname = true,
+          bold_basename = true,
+          dim_context = false,
+          alt_background = false,
+        },
         cmp = true,
         dashboard = true,
         flash = true,
@@ -38,7 +44,10 @@ return {
         noice = true,
         notify = true,
         semantic_tokens = true,
-        telescope = true,
+        telescope = {
+          enabled = true,
+          -- style = 'nvchad',
+        },
         treesitter = true,
         treesitter_context = true,
         which_key = true,
