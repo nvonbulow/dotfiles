@@ -10,8 +10,11 @@ vim.wo.number = true
 -- Relative line numbers
 vim.wo.relativenumber = true
 
--- Enable mouse mode
-vim.o.mouse = 'a'
+-- Highlight the line the cursor is on
+vim.o.cursorline = true
+
+-- Disable mouse mode completely
+vim.o.mouse = ''
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
