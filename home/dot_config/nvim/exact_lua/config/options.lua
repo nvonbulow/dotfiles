@@ -40,3 +40,7 @@ vim.o.completeopt = 'menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
+
+-- Set the font in gvim mode
+vim.o.guifont = 'SpaceMono Nerd Font:h14'
+

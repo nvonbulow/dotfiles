@@ -3,6 +3,8 @@ return {
   {
     'folke/noice.nvim',
     event = 'VeryLazy',
+    -- This plugin doesn't seem to play well with firenvim
+    cond = not vim.g.started_by_firenvim,
     opts = {
       lsp = {
         override = {

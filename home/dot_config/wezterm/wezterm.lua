@@ -1,20 +1,24 @@
 local wezterm = require("wezterm")
 
-local config = {}
+local function get_config()
+	local config = {}
+	if wezterm.config_builder then
+		config = wezterm.config_builder()
+	end
+	-- font settings
+	config.font = wezterm.font("SpaceMono Nerd Font")
+	config.font_size = 13.5
+	-- disable ligatures ->
+	config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
 
-if wezterm.config_builder then
-	config = wezterm.config_builder()
+	config.term = "wezterm"
+
+	-- set theme
+	config.color_scheme = "Catppuccin Mocha"
+
+	config.hide_tab_bar_if_only_one_tab = true
+
+	return config
 end
 
--- font settings
-config.font = wezterm.font("SpaceMono Nerd Font")
-config.font_size = 14.0
--- disable ligatures ->
-config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
-
-config.term = "wezterm"
-
--- set theme
-config.color_scheme = "Catppuccin Mocha"
-
-return config
+return get_config()
