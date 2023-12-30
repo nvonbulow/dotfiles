@@ -91,7 +91,7 @@ return {
         { '<leader>sh', builtin.help_tags, desc = '[S]earch [H]elp' },
         { '<leader>sw', builtin.grep_string, desc = '[S]earch current [W]ord' },
         { '<leader>sg', builtin.live_grep, desc = '[S]earch by [G]rep' },
-        { '<leader>sG', ':LiveGrepGitRoot<cr>', desc = '[S]earch by [G]rep on Git Root' },
+        { '<leader>sG', live_grep_git_root, desc = '[S]earch by [G]rep on Git Root' },
         { '<leader>sd', builtin.diagnostics, desc = '[S]earch [D]iagnostics' },
         { '<leader>sr', builtin.resume, desc = '[S]earch [R]esume' },
       }
