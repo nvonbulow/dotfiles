@@ -31,6 +31,17 @@ local function live_grep_git_root()
   end
 end
 
+local function telescope_live_grep_open_files()
+  require('telescope.builtin').live_grep({
+    grep_open_files = true,
+    prompt_title = 'Live Grep in Open Files',
+  })
+end
+
+local function config_files()
+  require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') })
+end
+
 ---@type LazySpec
 return {
   {
@@ -65,17 +76,10 @@ return {
         winblend = 0,
       },
     },
-    cmd = { 'Telescope' },
+    cmd = { 'Telescope', 'LiveGrepGitRoot', 'TelescopeConfigFiles' },
     keys = function()
       -- See `:help telescope.builtin`
       local builtin = require('telescope.builtin')
-
-      local function telescope_live_grep_open_files()
-        require('telescope.builtin').live_grep({
-          grep_open_files = true,
-          prompt_title = 'Live Grep in Open Files',
-        })
-      end
 
       return {
         { '<leader>?', builtin.oldfiles, desc = '[?] Find recently opened files' },
@@ -94,6 +98,7 @@ return {
         { '<leader>sG', live_grep_git_root, desc = '[S]earch by [G]rep on Git Root' },
         { '<leader>sd', builtin.diagnostics, desc = '[S]earch [D]iagnostics' },
         { '<leader>sr', builtin.resume, desc = '[S]earch [R]esume' },
+        { '<leader>sc', config_files, desc = '[S]earch [C]onfig Files' },
       }
     end,
     config = function(_, opts)
@@ -106,6 +111,9 @@ return {
 
       -- Telescope live_grep in git root
       vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
+
+      -- Search config files
+      vim.api.nvim_create_user_command('TelescopeConfigFiles', config_files, {})
     end,
   },
 }

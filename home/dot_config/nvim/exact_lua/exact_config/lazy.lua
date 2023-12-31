@@ -24,8 +24,6 @@ require('lazy').setup({
   { import = 'config.plugins' },
   { import = 'config.plugins.lsp' },
   { import = 'config.plugins.lang' },
-  -- configs that are in progress and need to be cleaned up
-  { import = 'config.plugins.torefactor' },
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
@@ -34,8 +32,6 @@ require('lazy').setup({
 
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
-
-
 
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
