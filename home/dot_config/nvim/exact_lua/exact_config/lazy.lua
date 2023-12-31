@@ -23,6 +23,7 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   { import = 'config.plugins' },
   { import = 'config.plugins.lsp' },
+  { import = 'config.plugins.lang' },
   -- configs that are in progress and need to be cleaned up
   { import = 'config.plugins.torefactor' },
   -- NOTE: First, some plugins that don't require any configuration
