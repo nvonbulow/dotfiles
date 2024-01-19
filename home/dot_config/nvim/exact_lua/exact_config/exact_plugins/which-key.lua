@@ -14,6 +14,8 @@ return {
         ['g'] = { name = '+goto' },
         ['gs'] = { name = '+surround' },
         ['y'] = { name = '+yank' },
+        ['['] = { name = '+goto previous' },
+        [']'] = { name = '+goto next' },
         ['<leader>b'] = { name = '[B]uffer', _ = 'which_key_ignore' },
         ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
         ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
