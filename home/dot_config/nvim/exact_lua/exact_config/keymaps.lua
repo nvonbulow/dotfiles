@@ -1,4 +1,3 @@
-
 local set = vim.keymap.set
 -- [[ Basic Keymaps ]]
 
@@ -22,6 +21,12 @@ set('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
 -- set('n', '<C-k>', '<C-w>k', { desc = 'Go to upper window', remap = true })
 -- set('n', '<C-l>', '<C-w>l', { desc = 'Go to right window', remap = true })
 
+-- Window resizing
+set('n', '<C-Up>', '<cmd>resize +2<cr>', { desc = 'Increase window height' })
+set('n', '<C-Down>', '<cmd>resize -2<cr>', { desc = 'Decrease window height' })
+set('n', '<C-Left>', '<cmd>vertical resize +2<cr>', { desc = 'Increase window width' })
+set('n', '<C-Right>', '<cmd>vertical resize -2<cr>', { desc = 'Increase window width' })
+
 -- Window Management
 set('n', '<leader>ww', '<C-w>p', { desc = 'Other window', remap = true })
 set('n', '<leader>wd', '<C-w>c', { desc = 'Delete window', remap = true })
@@ -31,16 +36,15 @@ set('n', '<leader>-', '<C-w>s', { desc = 'Split window below', remap = true })
 set('n', '<leader>|', '<C-w>v', { desc = 'Split window right', remap = true })
 
 -- Tab Management
-set("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
-set("n", "<leader><tab>f", "<cmd>tabfirst<cr>", { desc = "First Tab" })
-set("n", "<leader><tab><tab>", "<cmd>tabnew<cr>", { desc = "New Tab" })
-set("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
-set("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
-set("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
+set('n', '<leader><tab>l', '<cmd>tablast<cr>', { desc = 'Last Tab' })
+set('n', '<leader><tab>f', '<cmd>tabfirst<cr>', { desc = 'First Tab' })
+set('n', '<leader><tab><tab>', '<cmd>tabnew<cr>', { desc = 'New Tab' })
+set('n', '<leader><tab>]', '<cmd>tabnext<cr>', { desc = 'Next Tab' })
+set('n', '<leader><tab>d', '<cmd>tabclose<cr>', { desc = 'Close Tab' })
+set('n', '<leader><tab>[', '<cmd>tabprevious<cr>', { desc = 'Previous Tab' })
 
 -- Diagnostic keymaps
 set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 -- set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 -- set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
-
