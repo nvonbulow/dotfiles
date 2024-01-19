@@ -41,8 +41,14 @@ if command -v brew > /dev/null; then
   )
 fi
 
-if command -v rtx > /dev/null; then
-  znap eval rtx-activate 'rtx activate zsh'
-  znap fpath _rtx 'rtx completion zsh'
+if command -v mise > /dev/null; then
+  znap eval mise-activate 'mise activate zsh'
+  znap fpath _mise 'mise completion zsh'
 fi
+
+# znap function _rustup rustup 'eval "$(rustup completions zsh)"'
+# compctl -K _rustup rustup
+#
+# znap function _cargo cargo 'eval "$(rustup completions zsh cargo)"'
+# compctl -K _cargo cargo
 
