@@ -46,6 +46,8 @@ if command -v mise > /dev/null; then
   znap fpath _mise 'mise completion zsh'
 fi
 
+alias vim="nvim" && export EDITOR=nvim
+
 # znap function _rustup rustup 'eval "$(rustup completions zsh)"'
 # compctl -K _rustup rustup
 #

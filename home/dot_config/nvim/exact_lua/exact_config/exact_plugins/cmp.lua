@@ -15,6 +15,8 @@ return {
 
       -- Adds a number of user-friendly snippets
       'rafamadriz/friendly-snippets',
+      -- Copilot integration
+      'zbirenbaum/copilot-cmp',
     },
     opts = function ()
       local cmp = require('cmp')
@@ -35,6 +37,7 @@ return {
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
           ['<C-Space>'] = cmp.mapping.complete({}),
+          ['<Esc>'] = cmp.mapping.abort(),
           ['<CR>'] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
@@ -59,6 +62,7 @@ return {
           end, { 'i', 's' }),
         }),
         sources = {
+          { name = 'copilot' },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },

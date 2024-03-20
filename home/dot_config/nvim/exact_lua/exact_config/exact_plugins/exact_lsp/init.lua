@@ -78,6 +78,7 @@ return {
       { 'folke/neodev.nvim', opts = {} },
       'mason.nvim',
       'williamboman/mason-lspconfig.nvim',
+      'nvimtools/none-ls.nvim',
       -- { 'lvimuser/lsp-inlayhints.nvim', opts = { inlay_hints = { parameter_hints = { show = true } } } },
     },
     ---@class LspOptions
@@ -104,6 +105,11 @@ return {
             workspace = { checkThirdParty = false },
             telemetry = { enable = false },
             diagnostics = { disable = { 'missing-fields' } },
+          },
+        },
+        eslint = {
+          settings = {
+            workingDirectories = { mode = 'auto' },
           },
         },
       },
@@ -264,5 +270,9 @@ return {
         ensure_installed()
       end
     end,
+  },
+  -- Enable support for linters, etc.
+  {
+    'nvimtools/none-ls.nvim',
   },
 }

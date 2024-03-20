@@ -24,6 +24,9 @@ setopt GLOB_STAR_SHORT
 # Sort numbers numerically, not lexicographically.
 setopt NUMERIC_GLOB_SORT
 
+# Don't log commands with a leading space to the history
+setopt HIST_IGNORE_SPACE
+
 # Allow zsh to complete aliases, e.g. ls -> eza
 setopt completealiases
 
