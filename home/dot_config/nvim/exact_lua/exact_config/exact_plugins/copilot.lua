@@ -29,14 +29,14 @@ return {
         mode = 'i',
         desc = 'Accept Copilot Suggestion',
       },
-      -- {
-      --   '<Tab>',
-      --   function()
-      --     require('copilot.suggestion').accept()
-      --   end,
-      --   mode = 'i',
-      --   desc = 'Accept Copilot Suggestion',
-      -- },
+      {
+        '<M-\\>',
+        function()
+          require('copilot.suggestion').accept()
+        end,
+        mode = 'i',
+        desc = 'Accept Copilot Suggestion',
+      },
       {
         '<M-k>',
         function()

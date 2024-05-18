@@ -7,7 +7,7 @@ local function get_config()
   end
   -- font settings
   config.font = wezterm.font("SpaceMono Nerd Font")
-  config.font_size = 13.5
+  config.font_size = 15
   -- disable ligatures ->
   config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
   config.underline_position = "-0.2cell"
