@@ -11,23 +11,38 @@ return {
     opts = {
       defaults = {
         -- document existing key chains
-        ['g'] = { name = '+goto' },
-        ['gs'] = { name = '+surround' },
-        ['y'] = { name = '+yank' },
-        ['['] = { name = '+goto previous' },
-        [']'] = { name = '+goto next' },
-        ['<leader>b'] = { name = '[B]uffer', _ = 'which_key_ignore' },
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>q'] = { name = '[Q]uit/session', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+        { '<leader>b', group = '[B]uffer' },
+        { '<leader>b_', hidden = true },
+        { '<leader>c', group = '[C]ode' },
+        { '<leader>c_', hidden = true },
+        { '<leader>d', group = '[D]ocument' },
+        { '<leader>d_', hidden = true },
+        { '<leader>g', group = '[G]it' },
+        { '<leader>g_', hidden = true },
+        { '<leader>gh', group = 'Git [H]unk' },
+        { '<leader>gh_', hidden = true },
+        { '<leader>q', group = '[Q]uit/session' },
+        { '<leader>q_', hidden = true },
+        { '<leader>r', group = '[R]ename' },
+        { '<leader>r_', hidden = true },
+        { '<leader>s', group = '[S]earch' },
+        { '<leader>s_', hidden = true },
+        { '<leader>sn', group = '[S]earch [N]oice' },
+        { '<leader>sn_', hidden = true },
+        { '<leader>t', group = '[T]oggle' },
+        { '<leader>t_', hidden = true },
+        { '<leader>w', group = '[W]orkspace' },
+        { '<leader>w_', hidden = true },
+        { '<leader>ws', group = 'shift' },
+        { '[', group = 'goto previous' },
+        { ']', group = 'goto next' },
+        { 'g', group = 'goto' },
+        { 'gs', group = 'surround' },
+        { 'y', group = 'yank' },
       },
       defaults_visual = {
         -- required for visual <leader>hs (hunk stage) to work
-        ['<leader>'] = { name = 'VISUAL <leader>' },
+        { '<leader>ws', group = 'shift' },
       },
       plugins = {
         presets = {
@@ -44,8 +59,8 @@ return {
     config = function(_, opts)
       require('which-key').setup(opts)
 
-      require('which-key').register(opts.defaults)
-      require('which-key').register(opts.defaults_visual, { mode = 'v' })
+      require('which-key').add(opts.defaults)
+      require('which-key').add(opts.defaults_visual, { mode = 'v' })
     end,
   },
 }
