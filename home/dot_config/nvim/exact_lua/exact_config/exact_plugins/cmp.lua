@@ -16,7 +16,7 @@ return {
       -- Adds a number of user-friendly snippets
       'rafamadriz/friendly-snippets',
       -- Copilot integration
-      'zbirenbaum/copilot-cmp',
+      -- 'zbirenbaum/copilot-cmp',
     },
     opts = function ()
       local cmp = require('cmp')

@@ -53,7 +53,7 @@ return {
     optional = true,
     opts = {
       defaults = {
-        ['<leader>ws'] = { name = '+shift' },
+        { '<leader>ws', group = 'shift' },
       },
     },
   },

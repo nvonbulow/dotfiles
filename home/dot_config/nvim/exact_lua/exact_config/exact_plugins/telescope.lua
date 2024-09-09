@@ -99,6 +99,8 @@ return {
         { '<leader>sd', builtin.diagnostics, desc = '[S]earch [D]iagnostics' },
         { '<leader>sr', builtin.resume, desc = '[S]earch [R]esume' },
         { '<leader>sc', config_files, desc = '[S]earch [C]onfig Files' },
+
+        { '<leader>cd', builtin.diagnostics, desc = '[C]ode [D]iagnostics' },
       }
     end,
     config = function(_, opts)
