@@ -24,6 +24,7 @@ require('lazy').setup({
   { import = 'config.plugins' },
   { import = 'config.plugins.lsp' },
   { import = 'config.plugins.lang' },
+  { import = 'config.plugins.ai' },
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
