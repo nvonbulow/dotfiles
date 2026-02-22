@@ -320,3 +320,40 @@ asdf reshim neovim
 </details>
 
 </details>
+Summary: Config Differences
+Structure
+| Aspect | Current (kickstart) | Legacy |
+|--------|---------------------|--------|
+| Entry point | Single init.lua (913 lines) | Modular init.lua → lua/config/init.lua |
+| Plugins | Inline in init.lua + optional in lua/kickstart/plugins/ | 40+ separate files in lua/config/plugins/ |
+| Organization | Monolithic with optional modules | Fully modular (options, keymaps, autocmds, plugins) |
+Key Plugin Differences
+| Feature | Current | Legacy |
+|---------|---------|--------|
+| Completion | blink.cmp | nvim-cmp |
+| Statusline | mini.statusline | lualine |
+| Colorscheme | tokyonight | catppuccin |
+| Formatting | LSP native | conform.nvim |
+| LSP Setup | Basic with mason-lspconfig | Extensive custom LSP config with neoconf, none-ls |
+| AI Tools | None | CodeCompanion, GitHub Copilot, Copilot Chat |
+| File explorer | mini.files (optional) | neo-tree, oil.nvim |
+| UI Enhancements | Minimal | noice, notify, bufferline, barbecue, scrollview |
+| Git | gitsigns (optional) | gitsigns + fugitive + rhubarb + git-blame + lazygit |
+| Search/Navigation | telescope + flash (optional) | telescope + flash + spectre + legendary |
+| Terminal | Built-in | floaterm |
+| Session | None | persistence.nvim |
+Style Differences
+| Aspect | Current | Legacy |
+|--------|---------|--------|
+| stylua call_parentheses | None (omit parens) | Always |
+| hlsearch | true (highlights visible) | false |
+| relativenumber | false | true |
+| mouse | 'a' (enabled) | '' (disabled) |
+Legacy-Only Features
+- AI assistance (CodeCompanion, Copilot)
+- Project/session management (persistence)
+- Advanced UI (bufferline, noice, scrollview)
+- Hurl HTTP client support
+- Rust-specific tooling
+- vim-tmux-navigator integration
+- MCP hub for AI tooling
