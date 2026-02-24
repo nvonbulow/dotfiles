@@ -292,16 +292,7 @@ require('lazy').setup({
 
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
-    -- By default, Telescope is included and acts as your picker for everything.
-
-    -- If you would like to switch to a different picker (like snacks, or fzf-lua)
-    -- you can disable the Telescope plugin by setting enabled to false and enable
-    -- your replacement picker by requiring it explicitly (e.g. 'custom.plugins.snacks')
-
-    -- Note: If you customize your config for yourself,
-    -- it’s best to remove the Telescope plugin config entirely
-    -- instead of just disabling it here, to keep your config clean.
-    enabled = true,
+    enabled = false,
     event = 'VimEnter',
     dependencies = {
       'nvim-lua/plenary.nvim',
@@ -806,6 +797,9 @@ require('lazy').setup({
         },
         neotree = true,
         notify = true,
+        snacks = {
+          enabled = true,
+        },
         telescope = true,
         treesitter = true,
         treesitter_context = true,
@@ -815,6 +809,51 @@ require('lazy').setup({
     config = function(_, opts)
       require('catppuccin').setup(opts)
       vim.cmd.colorscheme 'catppuccin'
+    end,
+  },
+
+  { -- Snacks.nvim
+    'folke/snacks.nvim',
+    priority = 1000,
+    lazy = false,
+    opts = {
+      bigfile = { enabled = true },
+      dashboard = { enabled = true },
+      explorer = { enabled = true },
+      indent = { enabled = true },
+      input = { enabled = true },
+      notifier = { enabled = true },
+      oil = { enabled = true },
+      picker = { enabled = true },
+      quickfile = { enabled = true },
+      rename = { enabled = true },
+      scope = { enabled = true },
+      scroll = { enabled = true },
+      statuscolumn = { enabled = true },
+      words = { enabled = true },
+    },
+    keys = {
+      { '<leader><space>', function() Snacks.picker.smart() end, desc = 'Smart Find Files' },
+      { '<leader>,', function() Snacks.picker.buffers() end, desc = 'Buffers' },
+      { '<leader>/', function() Snacks.picker.grep() end, desc = 'Grep' },
+      { '<leader>:', function() Snacks.picker.command_history() end, desc = 'Command History' },
+      { '<leader>sf', function() Snacks.picker.files() end, desc = '[S]earch [F]iles' },
+      { '<leader>sg', function() Snacks.picker.grep() end, desc = '[S]earch by [G]rep' },
+      { '<leader>sh', function() Snacks.picker.help() end, desc = '[S]earch [H]elp' },
+      { '<leader>sk', function() Snacks.picker.keymaps() end, desc = '[S]earch [K]eymaps' },
+      { '<leader>sr', function() Snacks.picker.resume() end, desc = '[S]earch [R]esume' },
+      { '<leader>s.', function() Snacks.picker.oldfiles() end, desc = '[S]earch Recent Files' },
+      { '<leader>sd', function() Snacks.picker.diagnostics() end, desc = '[S]earch [D]iagnostics' },
+      { '<leader><leader>', function() Snacks.picker.buffers() end, desc = '[ ] Find existing buffers' },
+      { '<leader>cR', function() Snacks.rename.rename_file() end, desc = '[R]ename File' },
+    },
+    init = function()
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'OilActionsPost',
+        callback = function(event)
+          if event.data.actions[1].type == 'move' then Snacks.rename.on_rename_file(event.data.actions[1].src_url, event.data.actions[1].dest_url) end
+        end,
+      })
     end,
   },
 
