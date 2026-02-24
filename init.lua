@@ -808,6 +808,7 @@ require('lazy').setup({
         notify = true,
         telescope = true,
         treesitter = true,
+        treesitter_context = true,
         which_key = true,
       },
     },
@@ -866,6 +867,16 @@ require('lazy').setup({
       --  Check out: https://github.com/nvim-mini/mini.nvim
     end,
   },
+
+  { -- Show code context at top of window
+    'nvim-treesitter/nvim-treesitter-context',
+    event = 'VeryLazy',
+    opts = {
+      mode = 'cursor',
+      separator = '-',
+    },
+  },
+
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     branch = 'main',
