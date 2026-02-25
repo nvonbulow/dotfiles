@@ -89,12 +89,6 @@ return {
   {
     'Bekaboo/dropbar.nvim',
     event = 'VeryLazy',
-    dependencies = {
-      {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        build = 'make',
-      },
-    },
     keys = {
       { '<leader>;', function() require('dropbar.api').pick() end, desc = 'Pick symbols in winbar' },
       { '[;', function() require('dropbar.api').goto_context_start() end, desc = 'Go to start of current context' },
