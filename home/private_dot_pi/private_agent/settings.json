@@ -1,0 +1,8 @@
+{
+  "lastChangelogVersion": "0.63.1",
+  "defaultProvider": "openrouter",
+  "defaultModel": "openai/gpt-5.3-codex",
+  "packages": [
+    "npm:pi-vim"
+  ]
+}
