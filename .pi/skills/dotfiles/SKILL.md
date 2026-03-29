@@ -14,6 +14,18 @@ Use this skill for any request involving dotfiles changes, chezmoi synchronizati
 - Minimize blast radius by scoping checks and edits to requested targets.
 - Prevent secrets/runtime artifacts from entering git history.
 
+## Repository guard (required first step)
+
+Before doing anything else, verify this is the dotfiles repository context.
+
+1. Determine repo root:
+   - `git rev-parse --show-toplevel`
+2. Confirm the root contains `.chezmoiroot`.
+3. If either check fails:
+   - Stop.
+   - Tell the user this is a repo-local skill for the dotfiles repository.
+   - Ask them to `cd` to the dotfiles repo (or provide the correct path) and retry.
+
 ## Repo assumptions
 
 - This repo is a chezmoi source directory.
