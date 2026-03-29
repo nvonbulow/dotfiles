@@ -22,6 +22,13 @@ Guidance for coding agents working in this repository.
   - git: `git status --short <path>` and/or `git diff -- <path>`
   - chezmoi: `chezmoi status <target>` and `chezmoi diff <target>`
 
+## tmux config reloads (non-destructive)
+
+- Apply tmux config updates with:
+  - `tmux source-file ~/.config/tmux/tmux.conf`
+- Do **not** use `tmux kill-server` unless explicitly requested by the user.
+- If a full tmux restart is required, explain impact first (all sessions terminate) and get confirmation.
+
 ## Chezmoi path mapping reminders
 
 - `home/dot_foo` -> `~/.foo`
