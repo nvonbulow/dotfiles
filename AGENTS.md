@@ -18,6 +18,9 @@ Guidance for coding agents working in this repository.
   - `chezmoi status <target>`
   - `chezmoi diff <target>`
   - `chezmoi apply --dry-run --verbose <target>`
+- When asked “what changed” for any dotfile/target, verify and report from **both**:
+  - git: `git status --short <path>` and/or `git diff -- <path>`
+  - chezmoi: `chezmoi status <target>` and `chezmoi diff <target>`
 
 ## Chezmoi path mapping reminders
 
