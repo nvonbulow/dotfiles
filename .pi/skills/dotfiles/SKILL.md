@@ -57,6 +57,15 @@ git add <specific paths>
 git commit -m "..."
 ```
 
+When the user asks what changed for a dotfile/target, always check and report both views:
+
+```bash
+git status --short <path>
+git diff -- <path>
+chezmoi status <target>
+chezmoi diff <target>
+```
+
 ### Commands requiring explicit user confirmation
 
 Do **not** run the following unless user explicitly requests it in this conversation:
@@ -96,6 +105,7 @@ If destination mode drift appears for private dirs, prefer modeling with `privat
    - Identify exact target files/directories and intended direction of sync.
 2. **Inspect current state**
    - Run scoped `chezmoi status`/`diff` first.
+   - For “what changed?” questions, also run scoped `git status`/`diff` on corresponding source paths.
 3. **Sync correctly**
    - Use `chezmoi add <target>` for destination -> source capture.
    - Use source edits only when user wants source-first changes.
