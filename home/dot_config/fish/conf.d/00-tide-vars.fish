@@ -60,6 +60,19 @@ set -U tide_git_color_upstream 5FD700
 set -U tide_git_icon 
 set -U tide_git_truncation_length 24
 set -U tide_git_truncation_strategy
+set -U tide_vcs_bg_color 303030
+set -U tide_vcs_bookmark_icon 
+set -U tide_vcs_changeset_icon 
+set -U tide_vcs_color 5FD700
+set -U tide_vcs_color_bookmark D7AF00
+set -U tide_vcs_color_changeset 5FD700
+set -U tide_vcs_icon jj
+set -U tide_vcs_change_added_icon 
+set -U tide_vcs_change_copied_icon 
+set -U tide_vcs_change_modified_icon 
+set -U tide_vcs_change_removed_icon 
+set -U tide_vcs_change_renamed_icon 
+set -U tide_vcs_change_conflicted_icon 
 set -U tide_go_bg_color 303030
 set -U tide_go_color 00ACD7
 set -U tide_go_icon 
@@ -74,7 +87,7 @@ set -U tide_kubectl_bg_color 303030
 set -U tide_kubectl_color 326CE5
 set -U tide_kubectl_icon 󱃾
 set -U tide_left_prompt_frame_enabled true
-set -U tide_left_prompt_items os pwd git newline character
+set -U tide_left_prompt_items os pwd vcs newline character
 set -U tide_left_prompt_prefix 
 set -U tide_left_prompt_separator_diff_color 
 set -U tide_left_prompt_separator_same_color ╱
