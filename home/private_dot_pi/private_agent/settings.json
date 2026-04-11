@@ -1,8 +1,14 @@
 {
-  "lastChangelogVersion": "0.63.1",
-  "defaultProvider": "openrouter",
-  "defaultModel": "openai/gpt-5.3-codex",
+  "lastChangelogVersion": "0.66.1",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.3-codex",
   "packages": [
-    "npm:pi-vim"
-  ]
+    "npm:pi-vim",
+    "npm:@calesennett/pi-codex-usage",
+    "npm:@tintinweb/pi-subagents"
+  ],
+  "pi-codex-usage": {
+    "usageMode": "left",
+    "refreshWindow": "7d"
+  }
 }
