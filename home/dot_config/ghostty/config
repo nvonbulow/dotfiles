@@ -1,0 +1,12 @@
+# Ghostty Configuration
+# Reference: https://ghostty.org/docs/config
+
+# Font
+font-family = "SpaceMono"
+font-size = "14"
+font-feature = "-calt"
+font-feature = "-clig"
+font-feature = "-liga"
+
+# Theme
+theme = "Catppuccin Mocha"
