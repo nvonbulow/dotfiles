@@ -1,0 +1,16 @@
+modelRoles: 
+  default: openai-codex/gpt-5.3-codex:medium
+  plan: openai-codex/gpt-5.5:medium
+  smol: openai-codex/gpt-5.4-nano
+  slow: openai-codex/gpt-5.5:high
+  commit: openai-codex/gpt-5.3-codex
+disabledExtensions: 
+  []
+theme: 
+  dark: dark-volcanic
+display: 
+  showTokenUsage: true
+statusLine: 
+  separator: slash
+browser: 
+  headless: true
