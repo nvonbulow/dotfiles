@@ -39,6 +39,11 @@ function _tide_vcs_jj
     set -l divergent $jj_info[4]
     set -l description $jj_info[5]
 
+    # Default bg colors from git item if not explicitly set
+    set -q tide_jj_bg_color; or set -g tide_jj_bg_color $tide_git_bg_color
+    set -q tide_jj_bg_color_unstable; or set -g tide_jj_bg_color_unstable $tide_git_bg_color_unstable
+    set -q tide_jj_bg_color_urgent; or set -g tide_jj_bg_color_urgent $tide_git_bg_color_urgent
+
     # Set bg color based on state
     if test -n "$conflicted"
         set -g tide_jj_bg_color $tide_jj_bg_color_urgent
