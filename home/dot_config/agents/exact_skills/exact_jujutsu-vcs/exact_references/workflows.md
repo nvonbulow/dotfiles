@@ -10,6 +10,53 @@ jj commit -m "<message>"
 jj log -n 10
 ```
 
+## Start unrelated work from the intended base
+
+Do not start new unrelated work from whatever `@` happens to be.
+
+If the repo uses a local `dev` bookmark/base workflow, start from `dev`:
+
+```bash
+jj new dev -m "<message>"
+```
+
+Otherwise start from the repo's trunk revset:
+
+```bash
+jj new trunk() -m "<message>"
+# or when the repo convention is an explicit bookmark:
+jj new main -m "<message>"
+```
+
+Verify before editing:
+
+```bash
+jj log -n 15
+```
+
+## Top-of-stack fixups
+
+When a small correction belongs in an earlier change, keep working at the stack head and move the edit backward:
+
+```bash
+jj squash --into <target-rev>
+jj squash --into <target-rev> -i
+```
+
+Use automatic line-based redistribution when edits clearly match mutable ancestors:
+
+```bash
+jj absorb
+jj absorb path/to/file
+```
+
+Verify the affected change:
+
+```bash
+jj show <target-rev>
+jj log -n 20
+```
+
 ## Split one commit into two atomic commits
 
 ```bash
@@ -30,6 +77,32 @@ jj absorb path/to/file
 
 ```bash
 jj squash --from <source-rev> --into <dest-rev>
+```
+
+## Stacked PR / relation-chain review loop
+
+```bash
+jj log -n 30
+# make review fix at stack head
+jj squash --into <reviewed-rev> -i
+# or, when line ownership is obvious:
+jj absorb
+jj log -n 30
+```
+
+Use bookmarks as publication handles, not as required local work containers:
+
+```bash
+jj bookmark create -r <review-head> <name>
+jj git push --remote origin --bookmark <name>
+```
+
+After a reviewed change lands upstream, fetch and clean up the obsolete local review chain:
+
+```bash
+jj git fetch --remote origin
+jj abandon -r <merged-local-root>::
+jj log -n 30
 ```
 
 ## Reorder commits in a stack

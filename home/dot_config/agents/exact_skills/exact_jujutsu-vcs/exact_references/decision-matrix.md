@@ -13,6 +13,7 @@ Use this to choose the first `jj` command for a task.
 | Move changes manually between commits | `jj squash --from <src> --into <dst>` | `-i` for partial | `jj show <dst>` |
 | Restore file(s) to previous content | `jj restore <paths>` | `jj restore --from <rev> --into <rev>` | `jj diff` |
 | Create inverse commit(s) | `jj revert -r <rev> -o <dest>` | adjust with `-A/-B` | `jj show @` |
+| Start unrelated work | If using local `dev` workflow: `jj new dev -m ...` | Otherwise `jj new trunk() -m ...` / repo main | `jj log -n 15` |
 | Move stack to new base | `jj rebase -b @ -o <new-base>` | resolve conflicts if any | `jj log -n 30` |
 | Move one commit only | `jj rebase -r <rev> -o <parent>` | reorder via `-A/-B` | `jj log -n 30` |
 | Reorder many commits interactively | `jj arrange <revset>` | cleanup with `jj simplify-parents` | `jj log -n 30` |
@@ -21,12 +22,15 @@ Use this to choose the first `jj` command for a task.
 | Inspect old repo state without mutating | `jj --at-op=<id> --ignore-working-copy log` | `... status` | — |
 | Sync with remote | `jj git fetch --remote <r>` | `jj git push --remote <r>` | `jj bookmark list` |
 | Push specific work only | `jj git push --bookmark <name>` | or `--change <rev>` | `--dry-run` |
+| Publish shaped local work for review | `jj bookmark create -r <review-head> <name>` | `jj git push --bookmark <name>` | `jj git push --dry-run` |
+| Clean up merged review chain | `jj git fetch --remote <r>` | `jj abandon -r <merged-local-root>::` | `jj log -n 30` |
 | Resolve bookmark tracking issues | `jj bookmark list --all` | `jj bookmark track/untrack/move` | `jj status` |
 | Handle stale workspace | `jj workspace update-stale` | continue work | `jj status` |
 | Create extra workspace | `jj workspace add <path> --name <n>` | `jj workspace list` | `jj workspace root --name <n>` |
 | Reduce checkout scope | `jj sparse set --clear --add <path>` | `jj sparse list` | `jj status` |
 | Run formatters across mutable stack | `jj fix` | scope via `-s`/paths | `jj op show -p` |
 | Find first bad revision automatically | `jj bisect run --range A..B -- <cmd>` | `--find-good` if needed | note exit codes |
+| Test/edit several PR heads together | `jj new <head1> <head2> -m "merge: local integration"` | `jj new`; redistribute with `jj absorb` / `jj squash --into` | `jj log -n 30` |
 | Resolve conflicts | `jj resolve` | or edit + `jj diff` | `jj status` |
 | Resolve divergent changes | `jj log` (find `/0`,`/1`) | `abandon` / `metaedit --update-change-id` / `squash` | `jj log -n 20` |
 

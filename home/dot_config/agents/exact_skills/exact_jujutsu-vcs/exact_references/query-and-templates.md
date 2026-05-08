@@ -13,8 +13,20 @@ Examples:
 
 ```bash
 jj log -r 'mutable() & ancestors(@)'
-jj rebase -s 'roots(trunk()..@)' -o trunk()
+jj rebase -s 'all:roots(trunk()..@)' -o trunk()
 ```
+
+Common workflow revsets:
+
+```bash
+jj log -r 'roots(trunk()..@)'
+# For commands that expect one revision, use all: only when multiple roots are intended:
+jj rebase -s 'all:roots(trunk()..@)' -o trunk()
+jj log -r 'heads(trunk():: & mine())'
+jj log -r 'dev | dev::@ | @::heads(dev:: & mine())'
+```
+
+If the repository uses a local `dev` bookmark/base workflow, prefer `dev` over `main`/`trunk()` as the start point for new unrelated work. Keep `trunk()` in revsets for upstream comparisons and rebases.
 
 ## Filesets (`jj help -k filesets`)
 
@@ -38,6 +50,15 @@ Examples:
 ```bash
 jj log -T 'commit_id.short() ++ " " ++ description.first_line() ++ "\n"'
 jj op log -T 'id.short() ++ " " ++ description ++ "\n"'
+```
+
+Optional aliases for stacked/local-dev workflows:
+
+```toml
+[revset-aliases]
+'active_roots()' = 'roots(trunk()..@)'
+'my_heads()' = 'heads(trunk():: & mine())'
+'dev_stack()' = 'dev | dev::@ | @::heads(dev:: & mine())'
 ```
 
 ## Inspection commands worth using often

@@ -14,6 +14,18 @@ jj bookmark track <name> --remote <remote>
 jj bookmark untrack <name> --remote <remote>
 ```
 
+
+## Bookmarks as publication handles
+
+Local changes do not need bookmark names while they are being shaped. Add or move a bookmark at the review/shipping boundary:
+
+```bash
+jj bookmark create -r <review-head> <name>
+jj git push --remote origin --bookmark <name>
+```
+
+For stacked PRs, bookmark the head of each reviewable boundary. Review fixes can be moved into earlier changes with `jj squash --into <rev> -i` or `jj absorb`; descendants update automatically.
+
 ## Daily sync loop
 
 ```bash
@@ -29,6 +41,22 @@ jj git push --remote origin --bookmark <name>
 jj git push --remote origin --tracked
 jj git push --remote origin --change <rev>
 jj git push --remote origin --dry-run
+```
+
+## Cleanup after merge
+
+After fetching upstream, old local review changes may remain as duplicate/obsolete changes. Inspect first, then abandon the merged local chain:
+
+```bash
+jj git fetch --remote origin
+jj log -n 30
+jj abandon -r <merged-local-root>::
+```
+
+If only a bookmark/review head is obsolete:
+
+```bash
+jj abandon <old-bookmark-or-change>
 ```
 
 ## Remote strategy notes (from docs)

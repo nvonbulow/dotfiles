@@ -21,6 +21,57 @@ Useful options:
 - `--keep-divergent`
 - `--simplify-parents`
 
+
+## Local dev-base workflow
+
+Use an empty `dev` bookmark as a local fanout point when maintaining several active stacks. If this workflow is active, start unrelated work from `dev`; otherwise start from `trunk()`/repo main.
+
+```bash
+jj new trunk()
+jj bookmark set dev
+jj new dev -m "<feature message>"
+```
+
+After fetching upstream updates, move `dev`; descendants rebase with it:
+
+```bash
+jj git fetch --remote origin
+jj rebase -r dev -o trunk()
+jj log -n 30
+```
+
+## Simultaneous multi-branch integration
+
+To test or edit several active PR heads together, create a local merge integration change and work above it:
+
+```bash
+jj new <pr1-head> <pr2-head> <pr3-head> -m "merge: local integration"
+jj new
+```
+
+Redistribute fixes back to the owning branch/change:
+
+```bash
+jj absorb
+jj squash --into <target-rev> -i
+```
+
+If one branch gets a new head, rebase the integration merge onto the updated parent set:
+
+```bash
+jj rebase -r <integration-rev> -o <pr1-head> -o <pr2-new-head> -o <pr3-head>
+```
+
+After upstream moves, rebase all active roots under the current integration workspace:
+
+```bash
+jj git fetch --remote origin
+jj rebase -s 'all:roots(trunk()..@)' -o trunk()
+jj log -n 30
+```
+
+Use `all:` only when the revset intentionally resolves to multiple roots.
+
 ## Specialized topology tools
 
 ### `jj arrange`

@@ -11,6 +11,114 @@ Prefer `jj` over `git` unless the user explicitly requests `git`.
 
 To keep context compact, load only the relevant reference file(s) from [references/index.md](references/index.md) for the task.
 
+## Agent Cheat Sheet
+
+Load this top-level file first. For routine work, use the commands below directly; load a reference file only when the task needs detail beyond the cheat sheet.
+
+### First look / safety snapshot
+
+```bash
+jj status
+jj log -n 12
+jj op log -n 8
+```
+
+If state is confusing, inspect old operations without changing the working copy:
+
+```bash
+jj --at-op=<op-id> --ignore-working-copy log -n 20
+jj --at-op=<op-id> --ignore-working-copy status
+```
+
+### Start or finish work
+
+```bash
+# New unrelated work: prefer dev when the repo uses the local dev-base workflow.
+jj new dev -m "<message>"
+
+# Otherwise start from the repo trunk revset / explicit main bookmark.
+jj new trunk() -m "<message>"
+jj new main -m "<message>"
+
+# Commit current working-copy change, leaving a new empty @.
+jj commit -m "<message>"
+
+# Rename/describe the current change without committing it.
+jj describe -m "<message>"
+```
+
+### Shape atomic changes
+
+```bash
+# Split mixed work into reviewable changes.
+jj split -r @
+jj describe -r <rev> -m "<message>"
+
+# Move current fixups back into the owning earlier change.
+jj absorb
+jj squash --into <target-rev>
+jj squash --into <target-rev> -i
+
+# Inspect what changed.
+jj show <rev>
+jj diff -r <rev>
+```
+
+### Move stacks / graph surgery
+
+```bash
+# Move the current stack to a new base.
+jj rebase -b @ -o <new-base>
+
+# Move only one commit, preserving descendants separately.
+jj rebase -r <rev> -o <new-parent>
+
+# Insert one commit before/after another.
+jj rebase -r <rev> -A <target>
+jj rebase -r <rev> -B <target>
+
+# Rebase all active roots after trunk moves.
+jj rebase -s 'all:roots(trunk()..@)' -o trunk()
+```
+
+### Conflicts and recovery
+
+```bash
+# See and resolve conflicts.
+jj status
+jj resolve --list
+jj resolve <path>
+
+# Fast recovery.
+jj undo
+jj redo
+jj op log -n 20
+jj op restore <op-id>
+```
+
+### Sync and publish
+
+```bash
+jj git fetch --remote origin
+jj bookmark list --all
+jj git push --remote origin --dry-run
+jj git push --remote origin --bookmark <name>
+jj git push --remote origin --change <rev>
+```
+
+### Reference routing
+
+| Need | Load |
+|---|---|
+| Task-to-command choice | [decision-matrix.md](references/decision-matrix.md) |
+| Surprise/error recovery | [failure-mode-matrix.md](references/failure-mode-matrix.md) |
+| Daily workflows/fixups/review loops | [workflows.md](references/workflows.md) |
+| Splits/squash/absorb/restore/revert | [history-rewriting.md](references/history-rewriting.md) |
+| Rebases/stacks/topology/integration merges | [graph-operations.md](references/graph-operations.md) |
+| Git remotes/bookmarks/publishing | [git-and-bookmarks.md](references/git-and-bookmarks.md) |
+| Revsets/templates/inspection | [query-and-templates.md](references/query-and-templates.md) |
+| Workspaces/sparse/stale workspaces | [workspaces-and-sparse.md](references/workspaces-and-sparse.md) |
+
 ## Core Principles
 
 1. **Edits are already tracked in the working-copy changeset** (`@`); there is no separate staging area.
@@ -18,6 +126,7 @@ To keep context compact, load only the relevant reference file(s) from [referenc
 3. **History is malleable** in `jj`; rewrite confidently, then verify.
 4. **Operation log is your safety net**: almost every mistake is recoverable.
 5. **Check graph before and after mutation**.
+6. **Start unrelated work from the intended base**: use `dev` if the repository uses the local dev-base workflow; otherwise use `trunk()`/`main` by repo convention.
 
 ## Quick Triage (run first)
 
@@ -80,9 +189,35 @@ When current working copy contains multiple concerns:
    jj rebase -r <rev> -B <target>
    ```
 
-### 3) Fixup workflow with absorb/squash
+### 3) Start unrelated work from the right base
+
+Before starting a new, unrelated task, do not blindly continue from current `@`.
+
+If the repository uses the optional local `dev` bookmark/base workflow, start from `dev`:
+
+```bash
+jj new dev -m "<message>"
+```
+
+Otherwise start from the repo's trunk revset:
+
+```bash
+jj new trunk() -m "<message>"
+# or, when the repo convention is an explicit bookmark:
+jj new main -m "<message>"
+```
+
+Verify the parent before editing:
+
+```bash
+jj log -n 15
+```
+
+### 4) Fixup workflow with absorb/squash
 
 Use when a later commit contains corrections that belong in earlier commits.
+
+Default to working at the stack head and moving edits backward, instead of interrupting the workspace with `jj edit <old-rev>`, when the fix is small and clearly belongs to an earlier change.
 
 - **Automatic line-based fixup into ancestors:**
   ```bash
@@ -110,7 +245,7 @@ jj log -n 20
 jj show <affected-rev>
 ```
 
-### 4) Operation-log recovery workflow (must know)
+### 5) Operation-log recovery workflow (must know)
 
 Use for accidental rebase/squash/abandon, or "where did my work go?"
 
@@ -137,7 +272,29 @@ Use for accidental rebase/squash/abandon, or "where did my work go?"
    jj status
    ```
 
-### 5) Stacked-change maintenance
+### 6) Optional local dev-base workflow
+
+Use this when maintaining several local branches/stacks at once or when local-only developer setup should sit below all active work. Keep `dev` empty unless the user explicitly wants local-only changes there.
+
+Create or move active work to fan out from `dev`:
+
+```bash
+jj new trunk()
+jj bookmark set dev
+jj new dev -m "<feature message>"
+```
+
+After upstream changes land, rebase only `dev`; descendants follow:
+
+```bash
+jj git fetch --remote origin
+jj rebase -r dev -o trunk()
+jj log -n 30
+```
+
+With this workflow active, new unrelated work should start from `dev`, not `main`/`trunk`.
+
+### 7) Stacked-change maintenance
 
 For a stack of dependent commits:
 
@@ -159,7 +316,7 @@ jj resolve
 jj status
 ```
 
-### 6) Git remote sync with bookmarks
+### 8) Git remote sync with bookmarks
 
 Typical sync loop:
 

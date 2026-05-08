@@ -23,6 +23,10 @@ Use this when `jj` behavior seems surprising.
 | “Fix/formatter changed many commits” | `jj fix` applies across selected revs and descendants | Review via `jj op show -p`; undo and rerun with narrower `-s`/paths |
 | “Working copy suddenly includes/excludes many files” | Sparse patterns changed | `jj sparse list`; fix with `jj sparse set ...` or `jj sparse reset` |
 | “New files keep being auto-tracked unexpectedly” | `snapshot.auto-track` + ignore patterns | `jj file untrack <path>`; adjust ignore rules and/or `snapshot.auto-track` config |
+| “New work appears stacked on an unrelated feature” | Work started from current `@` instead of intended base | If using local `dev` workflow, `jj rebase -b @ -o dev`; otherwise rebase/split onto `trunk()` or repo main |
+| “Merged PR still appears locally / red `??` duplicates” | Upstream merge imported equivalent commits while old local review chain remains | `jj git fetch --remote <r>` → inspect `jj log -n 30` → `jj abandon -r <merged-local-root>::` |
+| “Revset resolved to more than one revision” | Command expected one revision but the revset selected multiple roots/heads | Add `all:` only if multiple revisions are intentional; otherwise narrow revset or use explicit commit IDs |
+| “Default log hides main/trunk context” | Customized/default log revset omits upstream base | Use explicit log revset such as `jj log -r 'trunk() | @ | ancestors(@, 20)'`; with dev-base workflow include `dev` |
 | “Immutable commit rewrite blocked” | Target revision in immutable set | Stop and confirm intent; only then consider `--ignore-immutable` |
 
 ## Triage sequence (when unsure)

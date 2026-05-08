@@ -18,6 +18,12 @@
   - multiple remotes strategy
   - revsets/filesets/templates mental models
 
+## External workflow articles
+
+- Reasonably Polymorphic, “Jujutsu Strategies”: stacked PRs, optional empty `dev` base, bookmarks as publication handles, revset/log customization.
+- Steve Klabnik, “Working on all of your branches simultaneously”: local merge integration changes for multiple PR heads, all-root rebases with `all:roots(...)`, cleanup of obsolete merged branches.
+- Matt Hall, “Jujutsu From The Trenches”: top-of-relation-chain work plus `jj squash --into`, Gerrit `Change-Id` templates, cleanup of merged review chains, explicit base selection for new work.
+
 ## Helpful features added to skill references
 
 - Graph surgery beyond basic rebase: `arrange`, `parallelize`, `simplify-parents`.
