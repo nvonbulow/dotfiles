@@ -1,14 +1,42 @@
 {
-  "lastChangelogVersion": "0.66.1",
+  "lastChangelogVersion": "0.67.68",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.3-codex",
+  "defaultModel": "gpt-5.4",
   "packages": [
     "npm:pi-vim",
-    "npm:@calesennett/pi-codex-usage",
-    "npm:@tintinweb/pi-subagents"
+    {
+      "source": "npm:@calesennett/pi-codex-usage",
+      "extensions": [
+        "-extensions/codex-usage-status.ts"
+      ]
+    },
+    "npm:@ogulcancelik/pi-tmux",
+    {
+      "source": "npm:@ifi/oh-pi-extensions",
+      "extensions": [
+        "-extensions/git-guard.ts",
+        "-extensions/safe-guard.ts"
+      ]
+    },
+    {
+      "source": "npm:@ifi/oh-pi-ant-colony",
+      "extensions": [
+        "-extensions/ant-colony/index.ts"
+      ]
+    },
+    "npm:@ifi/pi-extension-subagents",
+    "npm:@ifi/pi-plan",
+    "npm:@ifi/pi-spec",
+    "npm:@ifi/oh-pi-themes",
+    "npm:@ifi/oh-pi-prompts",
+    "npm:@ifi/oh-pi-skills",
+    "npm:@ifi/pi-web-remote"
   ],
   "pi-codex-usage": {
     "usageMode": "left",
     "refreshWindow": "7d"
-  }
+  },
+  "extensions": [
+    "-extensions/btw.ts"
+  ]
 }

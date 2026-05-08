@@ -13,10 +13,11 @@ To keep context compact, load only the relevant reference file(s) from [referenc
 
 ## Core Principles
 
-1. **Every edit should land in an atomic changeset** (single intent per change).
-2. **History is malleable** in `jj`; rewrite confidently, then verify.
-3. **Operation log is your safety net**: almost every mistake is recoverable.
-4. **Check graph before and after mutation**.
+1. **Edits are already tracked in the working-copy changeset** (`@`); there is no separate staging area.
+2. **Every logical intent should end up as an atomic changeset**.
+3. **History is malleable** in `jj`; rewrite confidently, then verify.
+4. **Operation log is your safety net**: almost every mistake is recoverable.
+5. **Check graph before and after mutation**.
 
 ## Quick Triage (run first)
 
@@ -57,11 +58,12 @@ jj --at-op=<op-id> --ignore-working-copy status
 
 When current working copy contains multiple concerns:
 
-1. Commit current snapshot to anchor work:
+1. Start by inspecting what is already in `@`:
    ```bash
-   jj commit -m "wip: mixed changes"
+   jj status
+   jj show @
    ```
-2. Split into focused commits:
+2. Split the current mixed changeset into focused commits:
    ```bash
    jj split -r @
    ```
@@ -183,6 +185,10 @@ jj git push --remote origin --change <rev>
 
 - Do not run destructive filesystem commands to "fix" VCS confusion; use `jj op log` first.
 - Prefer `jj undo`/`jj op restore` over ad-hoc compensating history rewrites.
+- In non-interactive/background runs (agents, CI, `bash` jobs), avoid commands that open an editor prompt.
+  - Use explicit message flags, e.g. `jj squash --into @- -m "..."`, `jj describe -m "..."`.
+  - Otherwise `jj` may launch `$EDITOR` (often `nano`/`pico`) and fail/hang with `Failed to edit description`.
+- Do not assume a “stage then commit” model; in `jj`, edits are already recorded in `@`.
 - Before pushing rewritten history, always run:
   ```bash
   jj git fetch --remote <remote>
