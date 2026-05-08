@@ -95,4 +95,19 @@ return {
       { '];', function() require('dropbar.api').select_next_context() end, desc = 'Select next context' },
     },
   },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    ft = { 'markdown' },
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons',
+    },
+    opts = {
+      completions = {
+        lsp = {
+          enabled = true,
+        },
+      },
+    },
+  },
 }
