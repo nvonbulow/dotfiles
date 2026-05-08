@@ -2,6 +2,9 @@
 	email = {{ .email }}
 	name = {{ .name }}
 
+[http]
+	sslBackend = secure-transport
+
 [core]
 	# don't page if everything fits on a line
 	pager = less -F -X
