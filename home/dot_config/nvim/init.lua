@@ -759,7 +759,7 @@ require('lazy').setup({
     opts = {
       mode = 'cursor',
       max_lines = 5,
-      -- separator = '-',
+      separator = '-',
     },
   },
 
@@ -767,9 +767,10 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     branch = 'main',
     config = function()
-      local filetypes = {
+      require('nvim-treesitter').install {
         'bash',
         'c',
+        'csharp',
         'diff',
         'html',
         'lua',
@@ -782,10 +783,11 @@ require('lazy').setup({
         'vim',
         'vimdoc',
       }
-      require('nvim-treesitter').install(filetypes)
+      -- Enable treesitter highlighting for any filetype with an installed grammar
       vim.api.nvim_create_autocmd('FileType', {
-        pattern = filetypes,
-        callback = function() vim.treesitter.start() end,
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
+        end,
       })
     end,
   },
