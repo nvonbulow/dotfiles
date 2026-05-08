@@ -315,7 +315,7 @@ require('lazy').setup({
       -- Mason must be loaded before its dependents so we need to set it up here.
       -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
       { 'mason-org/mason.nvim', opts = {} },
-      { 'mason-org/mason-lspconfig.nvim', opts = {}, dependencies = { 'mason-org/mason.nvim' } },
+      { 'mason-org/mason-lspconfig.nvim', opts = { automatic_enable = { exclude = { 'ts_ls' } } }, dependencies = { 'mason-org/mason.nvim' } },
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
@@ -418,48 +418,21 @@ require('lazy').setup({
         end,
       })
 
-      -- LSP servers and clients are able to communicate to each other what features they support.
-      --  By default, Neovim doesn't support everything that is in the LSP specification.
-      --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
-      --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
-      local capabilities = require('blink.cmp').get_lsp_capabilities()
-
-      -- Enable the following language servers
-      --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-      --  See `:help lsp-config` for information about keys and how to configure
-      local servers = {
-        -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
-        -- rust_analyzer = {},
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
-      }
-
-      -- Ensure the servers and tools above are installed
-      --
-      -- To check the current status of installed tools and/or manually install
-      -- other tools, you can run
-      --    :Mason
-      --
-      -- You can press `g?` for help in this menu.
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        'lua_ls', -- Lua Language server
-        'stylua', -- Used to format Lua code
+      -- Broadcast blink.cmp capabilities to all LSP servers
+      vim.lsp.config('*', {
+        capabilities = require('blink.cmp').get_lsp_capabilities(),
       })
 
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
-      for name, server in pairs(servers) do
-        server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-        vim.lsp.config(name, server)
-        vim.lsp.enable(name)
-      end
+      -- Ensure the following servers and tools are installed via Mason.
+      -- mason-lspconfig's `automatic_enable` will auto-attach any installed LSP server.
+      require('mason-tool-installer').setup {
+        ensure_installed = {
+          'lua_ls', -- Lua Language server
+          'stylua', -- Used to format Lua code
+          'typescript-language-server', -- TypeScript/JavaScript LSP
+          'xcode-build-server', -- BSP for sourcekit-lsp to understand Xcode projects
+        },
+      }
 
       -- Special Lua Config, as recommended by neovim help docs
       vim.lsp.config('lua_ls', {
@@ -486,7 +459,9 @@ require('lazy').setup({
           Lua = {},
         },
       })
-      vim.lsp.enable 'lua_ls'
+
+      -- sourcekit-lsp ships with Xcode (not Mason-managed), so enable it manually
+      vim.lsp.enable 'sourcekit'
     end,
   },
 
