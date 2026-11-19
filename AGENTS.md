@@ -2,71 +2,54 @@
 
 Guidance for coding agents working in this repository.
 
-## Repository purpose
+## Repository and deployment
 
-- This is a **chezmoi-managed dotfiles** repo.
-- Source files live under `home/` and are materialized into `$HOME` by chezmoi.
-- Installer: `./install.sh` (runs `chezmoi init --apply --source=<repo>`).
+- This is a mise-managed Unix dotfiles checkout; confirm root `mise.toml` and `home/` before working.
+- Literal paths under `home/` map to `$HOME`. Root `mise.toml` owns deployment exceptions and permissions.
+- `./install.sh` is the local deployment/update entrypoint; `./install.sh --dry-run` previews it. Preview may install mise or record trust, but must not deploy targets or prompt-save identity.
+- Live-home deployment requires explicit user authorization. First cutover needs separate backups of conflicting chezmoi regular files; matching contents do not make them safe to replace. Never implicitly force: force makes no durable backup.
+- Fresh deployment uses bootstrap `--only files,dotfiles --prune-dotfiles`. Never replace the user's global mise config, install unrelated tools, or change the login shell.
+- Remote bootstrap uses `mise bootstrap --from <repository-url> --from-dir <persistent-checkout> --only files,dotfiles --prune-dotfiles`; keep the checkout available for symlinks. Add `--prompt-vars` only deliberately.
 
-## Important conventions
+## Source ownership and inspection
 
-- Prefer **chezmoi-native workflows** over editing destination files directly.
-- When capturing existing machine state, use:
-  - `chezmoi add <target>` (destination -> source)
-- Avoid using `chezmoi apply` unless explicitly asked to push source -> destination.
-- For validation, scope commands when possible:
-  - `chezmoi status <target>`
-  - `chezmoi diff <target>`
-  - `chezmoi apply --dry-run --verbose <target>`
-- When asked “what changed” for any dotfile/target, verify and report from **both**:
-  - git: `git status --short <path>` and/or `git diff -- <path>`
-  - chezmoi: `chezmoi status <target>` and `chezmoi diff <target>`
+- Most deployed leaves are symlinks: editing them already edits source. Do not capture them as if they were independent copies.
+- Pi/omp preferences, Neovim's lockfile, and Fish's `fish_plugins` are copies. Inspect intentional destination changes before `mise -C "$repo" dot add --group home <target>`. Never capture whole runtime trees.
+- Git/JJ identity targets are rendered templates; edit their `.tera` sources instead of capturing rendered output.
+- Copy/template apply overwrites target edits. Preserve those edits before authorized deployment.
+- For “what changed?”, report both scoped `mise -C "$repo" dot status <target>` / `dot diff <target>` and source VCS inspection. Native status alone cannot show edits made through source-backed links.
+- Prefer Jujutsu: `jj status`, `jj diff`, `jj log -n 12`, `jj op log -n 8`. Use scoped Git status/diff when explicitly requested. Keep changes atomic; never overwrite unrelated user changes.
+- Identity uses native vars: `mise -C "$repo" vars git_name='Your Name' git_email='you@example.invalid'`. Defaults work unattended; local mise override files remain untracked.
 
-## tmux config reloads (non-destructive)
+## Literal mappings and privacy
 
-- Apply tmux config updates with:
-  - `tmux source-file ~/.config/tmux/tmux.conf`
-- Do **not** use `tmux kill-server` unless explicitly requested by the user.
-- If a full tmux restart is required, explain impact first (all sessions terminate) and get confirmation.
+- `home/.config/nvim/init.lua` -> `~/.config/nvim/init.lua` (symlink).
+- `home/.config/fish/conf.d/mise-activate.fish` -> the same home-relative target (symlink).
+- `home/.pi/agent/settings.json` -> `~/.pi/agent/settings.json` (copy, `0600`).
+- `home/.omp/agent/config.yml` -> `~/.omp/agent/config.yml` (copy, `0600`).
+- `home/.gitconfig.tera` -> `~/.gitconfig`; `home/.config/jj/config.toml.tera` -> `~/.config/jj/config.toml` (templates).
+- `.pi`, `.pi/agent`, and `.omp/agent` must remain real `0700` directories. Do not model privacy with filename prefixes.
+- Pi/omp `skills` and `AGENTS.md` links contain literal `../../.config/agents/skills` and `../../.config/agents/AGENTS.md`; they resolve within the live home and may dangle. Preserve shared instruction sources; do not invent placeholders or replace regular-file conflicts.
+- Keep `home/.config/nvim/.neoconf.json` inactive. Managed-only pruning preserves unrelated target files.
+- Never commit `auth.json`, sessions, package caches, tokens, credentials, or other runtime state from Pi/omp or other applications.
 
-## Chezmoi path mapping reminders
+## Managed applications
 
-- `home/dot_foo` -> `~/.foo`
-- `home/private_dot_foo` -> `~/.foo` with private permissions (e.g. `0700` dir semantics)
-- `home/executable_dot_foo` -> `~/.foo` executable
-- `home/*/*.tmpl` are templates rendered by chezmoi
+- `home/.config/nvim/`: Neovim.
+- `home/.config/fish/`: Fish/Tide/Fisher; Fish is the only managed interactive shell. Keep activation interactive-only and Fisher installation opt-in.
+- `home/.config/tmux/`: tmux.
+- `home/.config/agents/`, `home/.pi/agent/`, `home/.omp/agent/`: shared skills/instructions and agent preferences.
+- Git/JJ configuration and other literal files under `home/`.
+- Windows, WSL-specific wrappers, WezTerm, Zsh, and fsh are retired. Do not redeploy them or remove existing live-home legacy files.
 
-## Pi config in this repo
+## tmux reloads
 
-- Pi config is currently managed at:
-  - `home/private_dot_pi/private_agent/settings.json` -> `~/.pi/agent/settings.json`
-- Keep `.pi` and `.pi/agent` private-mode semantics.
-- Do **not** commit runtime/secrets from `~/.pi/agent` (e.g. `auth.json`, sessions, package cache dirs).
+- Reload with `tmux source-file ~/.config/tmux/tmux.conf` only when authorized.
+- Never use `tmux kill-server` unless explicitly requested; explain full-restart session loss first.
 
-## Existing repo structure (high-level)
+## CI and PR expectations
 
-- `home/dot_config/nvim/` - Neovim config
-- `home/dot_config/zsh/` - Zsh config
-- `home/dot_config/tmux/` - tmux config
-- `home/dot_config/wezterm/` - WezTerm config + terminfo script
-- `home/dot_local/bin/` - local helper executables
-
-## CI expectations
-
-- CI runs `./install.sh` and checks `chezmoi data`.
-- Keep changes compatible with non-interactive setup (e.g., Codespaces/CI).
-
-## PR workflow expectations
-
-- Create feature branch from `master`.
-- Keep commits focused and small.
-- Use `gh pr create` for PRs when available.
-- If PR body/title is malformed due to shell quoting, fix with:
-  - `gh pr edit --body-file <file>`
-
-## Safety checklist before finishing
-
-1. `chezmoi status` (or scoped status) is as expected.
-2. No secrets/tokens added to source.
-3. Paths and permissions align with chezmoi conventions (`dot_`, `private_`, `executable_`).
-4. Document notable behavior changes in PR description.
+- CI uses `bash tests/bootstrap.sh` in disposable Linux and native macOS fixtures, never the operator's home.
+- Keep unattended installation supported. No application/plugin startup is needed for deployment validation.
+- Create feature branches from `master`; keep changes focused and small. Use `gh pr create` when requested; repair quoting with `gh pr edit --body-file <file>` if needed.
+- Before finishing, ensure no secrets were introduced, mappings/permissions match `mise.toml`, and report actual scoped checks and notable behavior changes. Do not claim a live cutover or macOS proof from Linux-only verification.

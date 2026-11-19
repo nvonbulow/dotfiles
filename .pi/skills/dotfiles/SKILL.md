@@ -1,155 +1,76 @@
 ---
 name: dotfiles
-description: Safely manage this chezmoi-based dotfiles repo. Use when syncing destination state into source with chezmoi add, validating scoped diffs, handling permissions/private naming, and preparing focused commits/PRs without leaking secrets.
+description: Safely manage this mise dotfiles checkout using scoped inspection, explicit copy capture, source template edits, and atomic Jujutsu changes without deploying to the live home or capturing secrets.
 ---
 
-# Dotfiles Skill (v2)
+# Dotfiles Skill
 
-Use this skill for any request involving dotfiles changes, chezmoi synchronization, or PR prep in this repository.
+Use for dotfiles edits, destination-to-source capture, and focused PR preparation.
 
-## Objectives
+## Repository guard
 
-- Keep changes reproducible and declarative through chezmoi source.
-- Prefer destination -> source sync (`chezmoi add`) unless explicitly told otherwise.
-- Minimize blast radius by scoping checks and edits to requested targets.
-- Prevent secrets/runtime artifacts from entering git history.
+Locate the intended checkout from context (or `git rev-parse --show-toplevel` in a Git checkout). Confirm its root contains `mise.toml` and `home/`; a source copy without Git metadata is valid for deployment. If the repository cannot be located, stop and request its path. Do not discover it by reading unrelated home configuration.
 
-## Repository guard (required first step)
+Set `$repo` to that checkout. Literal files under `home/` are the source of truth; no chezmoi filename modifiers remain.
 
-Before doing anything else, verify this is the dotfiles repository context.
+## Inspect before changing
 
-1. Determine repo root:
-   - `git rev-parse --show-toplevel`
-2. Confirm the root contains `.chezmoiroot`.
-3. If either check fails:
-   - Stop.
-   - Tell the user this is a repo-local skill for the dotfiles repository.
-   - Ask them to `cd` to the dotfiles repo (or provide the correct path) and retry.
-
-## Repo assumptions
-
-- This repo is a chezmoi source directory.
-- Installer is `./install.sh` (runs `chezmoi init --apply --source=<repo>`).
-- Pi config currently maps from:
-  - `home/private_dot_pi/private_agent/settings.json`
-  - to `~/.pi/agent/settings.json`
-- `private_` naming is used where destination permissions must remain private (e.g. `.pi` paths).
-
-## Safety policy
-
-### Safe-by-default command policy
-
-Prefer these commands first:
-
-```bash
-chezmoi status <target>
-chezmoi diff <target>
-chezmoi add <target>
-chezmoi source-path <target>
-chezmoi apply --dry-run --verbose <target>
+```sh
+mise -C "$repo" dot status <target>
+mise -C "$repo" dot diff <target>
+cd "$repo"
+jj status
+jj diff
+jj log -n 12
+jj op log -n 8
 ```
 
-Use targeted git operations:
+Use Jujutsu for VCS unless explicitly asked for Git. For “what changed?”, report both native deployment state and source VCS changes: editing a deployed symlink changes source immediately and may leave native status already applied. Scope commands and changes to requested paths; preserve unrelated work.
 
-```bash
-git status --short
-git add <specific paths>
-git commit -m "..."
-```
+## Choose the correct edit direction
 
-When the user asks what changed for a dotfile/target, always check and report both views:
+- **Linked leaves:** edit the source, or recognize that an edit through the destination symlink already edited it. Do not recapture directories.
+- **Copies:** Pi/omp preferences, Neovim `lazy-lock.json`, and Fish `fish_plugins` are independent regular files. Inspect intentional target contents and source differences, excluding runtime/secrets, before explicit capture:
 
-```bash
-git status --short <path>
-git diff -- <path>
-chezmoi status <target>
-chezmoi diff <target>
-```
+  ```sh
+  mise -C "$repo" dot add --group home <target>
+  ```
 
-### Commands requiring explicit user confirmation
+- **Templates:** edit `home/.gitconfig.tera` or `home/.config/jj/config.toml.tera`; never capture rendered targets. Identity uses native vars, e.g. `mise -C "$repo" vars git_name='Your Name' git_email='you@example.invalid'`. Defaults work unattended; interactive installation prompts. Keep personal `mise.local.toml` / `mise.*.local.toml` overrides untracked.
 
-Do **not** run the following unless user explicitly requests it in this conversation:
+Copy/template apply overwrites destination edits. Capture intentional copy edits before an authorized apply; do not introduce a merge or create-if-missing policy.
 
-- `chezmoi apply` (without `--dry-run`)
-- broad destructive git actions (`git reset --hard`, `git clean -fdx`, force push to unrelated branches)
-- history rewrites affecting shared branches
-- deletion/moves beyond requested scope
+## Mappings and deployment invariants
 
-If such a command seems necessary, ask for confirmation and state impact first.
+- `~/.config/nvim/init.lua` -> `home/.config/nvim/init.lua` (symlink).
+- `~/.config/fish/conf.d/mise-activate.fish` -> `home/.config/fish/conf.d/mise-activate.fish` (symlink).
+- `~/.pi/agent/settings.json` -> `home/.pi/agent/settings.json` (copy, `0600`).
+- `~/.omp/agent/config.yml` -> `home/.omp/agent/config.yml` (copy, `0600`).
+- `.pi`, `.pi/agent`, and `.omp/agent` are real private `0700` directories, declared in `mise.toml`; do not use naming prefixes or whole-directory links.
+- Pi/omp agent `skills` and `AGENTS.md` links contain literally `../../.config/agents/skills` and `../../.config/agents/AGENTS.md`. They resolve within the destination home; dangling referents are valid. Reject regular-file/directory conflicts and preserve the existing shared instructions rather than creating placeholders.
+- Keep `.config/nvim/.neoconf.json` inactive; do not deploy raw `.tera` or retired control files.
+- Preserve target-only files. Pruning removes only recorded obsolete managed files, not unmanaged leaves.
+- Fish is the sole managed interactive shell. Preserve interactive-only mise activation and Fisher's opt-in installation. Windows, WSL-specific wrappers, WezTerm, Zsh, and fsh are retired; do not recreate them or delete live legacy state.
 
-## Secrets and runtime exclusions
+## Safety and deployment
 
-Never commit or template runtime/secrets from home state, including (not exhaustive):
+Never commit credentials, tokens, auth files, sessions, caches, Pi/omp `git/` or `npm/` runtime directories, or machine-specific state. Capture only inspected individual managed targets, never broad home/runtime trees.
 
-- `~/.pi/agent/auth.json`
-- `~/.pi/agent/sessions/`
-- `~/.pi/agent/git/`, `~/.pi/agent/npm/`
-- transient caches, tokens, local machine state
+`./install.sh --dry-run` previews bootstrap; it may install mise and record trust but must not deploy targets or save prompted identity. Native status/diff provides rendered template inspection separately.
 
-If encountered, explicitly exclude and explain why.
+**Live-home deployment requires explicit authorization in this conversation.** `./install.sh` applies source to home; fresh deployment requires both `files,dotfiles` phases. Before first live cutover, separately back up and deliberately move aside conflicting chezmoi regular files, even when contents match. Never add implicit `--force-dotfiles`: force makes no durable backup. No live cutover is part of this migration.
 
-## Chezmoi naming and permission rules
+Remote deployment uses `mise bootstrap --from <repository-url> --from-dir <persistent-checkout> --only files,dotfiles --prune-dotfiles`, optionally `--prompt-vars`. Keep the checkout for symlink referents. Do not adopt history, replace global mise configuration, install unrelated tools, or change the login shell.
 
-When adding new managed entries, choose source path prefixes correctly:
+Destructive VCS actions, shared-history rewrites, and out-of-scope deletions require explicit authorization. If recovery is necessary, inspect `jj op log` and explain impact before `jj undo` or `jj op restore <op-id>`; do not overwrite unrelated user work.
 
-- `dot_foo` -> destination `.foo`
-- `private_dot_foo` -> destination `.foo` with private perms semantics
-- `executable_dot_foo` -> destination executable `.foo`
-- `.tmpl` for templated files
+## Finish atomically
 
-If destination mode drift appears for private dirs, prefer modeling with `private_` pathing rather than chmod hacks.
+1. Identify requested targets and edit direction.
+2. Inspect scoped native state and source VCS state.
+3. Edit linked/template sources or explicitly capture inspected copies.
+4. When authorized, run only the requested checks. Deployment tests use disposable fixtures, not the live home.
+5. Review `jj diff`; create a focused change with `jj describe -m "..."` and `jj commit -m "..."` when requested. Inspect status/log/op-log after VCS mutations.
+6. Report actual validation, exclusions, and deployment limits. PRs should include Summary, Validation, and Safety; never claim checks not run.
 
-## Standard operating procedure
-
-1. **Clarify scope**
-   - Identify exact target files/directories and intended direction of sync.
-2. **Inspect current state**
-   - Run scoped `chezmoi status`/`diff` first.
-   - For “what changed?” questions, also run scoped `git status`/`diff` on corresponding source paths.
-3. **Sync correctly**
-   - Use `chezmoi add <target>` for destination -> source capture.
-   - Use source edits only when user wants source-first changes.
-4. **Validate**
-   - Re-run scoped status/diff; optionally dry-run apply for affected target.
-5. **Commit minimally**
-   - Stage only relevant files; concise commit message.
-6. **PR hygiene**
-   - Include summary, safety notes, and any intentional exclusions.
-
-## PR body template
-
-Use this structure when asked to open/update a PR:
-
-```md
-## Summary
-- <change 1>
-- <change 2>
-
-## Validation
-- `chezmoi status <target>`
-- `chezmoi diff <target>`
-- `chezmoi apply --dry-run --verbose <target>`
-
-## Safety
-- confirmed no secrets/runtime artifacts were committed
-- scoped changes only to requested targets
-```
-
-## Quick checklists
-
-### Before commit
-
-- [ ] Changes are in chezmoi source paths (not only destination state)
-- [ ] `chezmoi status/diff` scoped output matches intent
-- [ ] No secrets/runtime files staged
-- [ ] Naming prefixes (`dot_`, `private_`, `executable_`) are correct
-
-### Before PR complete
-
-- [ ] Branch is correct and up to date
-- [ ] Commit scope is minimal
-- [ ] PR description explains validation and safety constraints
-
-## Invocation notes
-
-If invoked with `/skill:dotfiles <args>`, treat `<args>` as constraints and apply this policy/workflow while solving the user task.
+Invocation arguments to `/skill:dotfiles` constrain this workflow.
