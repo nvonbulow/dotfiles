@@ -5,14 +5,26 @@ on:
   pull_request:
 
 jobs:
-  clone-and-install:
+  linux:
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/vscode/devcontainers/base:ubuntu
-      env:
-        CODESPACES: true
     steps:
-      - uses: actions/checkout@v2
-      - run: ./install.sh
-      - name: chezmoi data
-        run: '"$HOME/.local/bin/chezmoi" data'
+      - uses: actions/checkout@v4
+      - name: Install smoke prerequisites
+        run: |
+          apt-get update
+          apt-get install -y ca-certificates curl git fish
+      - name: Smoke isolated bootstrap
+        run: bash tests/bootstrap.sh
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install smoke prerequisites
+        run: |
+          command -v git
+          command -v fish >/dev/null || brew install fish
+      - name: Smoke isolated bootstrap
+        run: bash tests/bootstrap.sh

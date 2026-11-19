@@ -1,0 +1,6 @@
+#:schema https://docs.jj-vcs.dev/latest/config-schema.json
+
+[user]
+name = {{ vars.git_name | json_encode }}
+email = {{ vars.git_email | json_encode }}
+

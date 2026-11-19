@@ -1,9 +1,11 @@
 [user]
-	email = {{ .email }}
-	name = {{ .name }}
+	email = {{ vars.git_email | json_encode }}
+	name = {{ vars.git_name | json_encode }}
 
+{% if os() == "macos" %}
 [http]
 	sslBackend = secure-transport
+{% endif %}
 
 [core]
 	# don't page if everything fits on a line

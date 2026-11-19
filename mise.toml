@@ -1,0 +1,42 @@
+min_version = "2026.11.8"
+
+[settings]
+dotfiles.root = "."
+
+[vars.git_name]
+default = "nvonbulow"
+prompt = "Git/JJ author name"
+
+[vars.git_email]
+default = "nick@nvonbulow.com"
+prompt = "Git/JJ author email"
+
+[bootstrap.directories."~/.pi"]
+mode = "0700"
+os = "unix"
+
+[bootstrap.directories."~/.pi/agent"]
+mode = "0700"
+os = "unix"
+
+[bootstrap.directories."~/.omp/agent"]
+mode = "0700"
+os = "unix"
+
+[dotfile_groups.home]
+root = "home"
+target = "~"
+mode = "symlink-each"
+exclude = [".config/nvim/.neoconf.json"]
+
+[dotfile_groups.home.entries]
+"~/.gitconfig" = { source = ".gitconfig.tera", mode = "template", permissions = "0644" }
+"~/.config/jj/config.toml" = { source = ".config/jj/config.toml.tera", mode = "template", permissions = "0644" }
+"~/.pi/agent/settings.json" = { mode = "copy", permissions = "0600" }
+"~/.omp/agent/config.yml" = { mode = "copy", permissions = "0600" }
+"~/.config/nvim/lazy-lock.json" = { mode = "copy", permissions = "0644" }
+"~/.config/fish/fish_plugins" = { mode = "copy", permissions = "0644" }
+
+[bootstrap.hooks]
+pre-dotfiles = "sh {{ config_root | quote }}/scripts/agent-links.sh check"
+post-dotfiles = "sh {{ config_root | quote }}/scripts/agent-links.sh apply"
